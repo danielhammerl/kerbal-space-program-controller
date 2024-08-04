@@ -13,12 +13,11 @@
 #define KSP_CONTROLLER_DEV_MODE
 #endif
 
+//#define DEBUG_MODE; // comment this line in for extended debug outputs
+
 #ifndef KSP_CONTROLLER_DEV_MODE
 #include <wiringPi.h>
 #else
-
-//#define DEBUG_MODE; // comment this line in for extended debug outputs
-
 // mock wiringpi in dev env
 
 void wiringPiSetupGpio() {
@@ -61,12 +60,12 @@ void get_altitude(const unsigned long long altitude) {
     std::cout << altitude << std::endl;
 }
 void onConnection() {
-    std::cout << "Conntected to KSP!" << std::endl;
+    std::cout << "Connected to KSP!" << std::endl;
     digitalWrite(26, HIGH);
 }
 
 void onDisconnection() {
-    std::cout << "Disconntected from KSP!" << std::endl;
+    std::cout << "Disconnected from KSP!" << std::endl;
     digitalWrite(26, LOW);
 }
 
@@ -107,8 +106,8 @@ float flightControlSensitivity = .4f;
     bool isConnected = true;
 
 
-    // if false its in ROT mode, if true in LIN mode
-    volatile bool rcsInLinMode = false; //volatile for now only to supress CLion warning, Remove in future
+    // if false it's in ROT mode, if true in LIN mode
+    volatile bool rcsInLinMode = false; //volatile for now only to suppress CLion warning, Remove in future
 
     // endless loop
     while (true) {
@@ -126,7 +125,7 @@ float flightControlSensitivity = .4f;
 
             if (hasEvent != -1) {
                 if (data.type == JS_EVENT_AXIS) {
-                    // maybe I want to have different sensitiviy levels for ROT and LIN RCS mode in future
+                    // maybe I want to have different sensitivity levels for ROT and LIN RCS mode in future
                     auto valueForMovement = normalizeShort(data.value) * flightControlSensitivity;
                     switch (data.number) {
                         case 0:
