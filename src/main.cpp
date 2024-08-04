@@ -118,6 +118,7 @@ float flightControlSensitivity = .4f;
             }
             auto vessel = sc.active_vessel();
             auto flight = vessel.flight();
+            // todo can i declare this outside of the while loop??
             js_event data; // NOLINT(*-pro-type-member-init)
             auto hasEvent = read(joystickDevice, &data, sizeof(data));
 
