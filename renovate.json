@@ -1,0 +1,50 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    ":dependencyDashboard",
+    ":semanticPrefixFixDepsChoreOthers",
+    ":ignoreModulesAndTests",
+    ":prConcurrentLimitNone",
+    ":semanticCommits",
+    ":prHourlyLimitNone",
+    "group:monorepos",
+    "group:recommended",
+    "workarounds:all"
+  ],
+  "gitAuthor": "Renovate <renovate@danielhammerl.de>",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": [
+      "at any time"
+    ],
+    "automerge": true
+  },
+  "npmrcMerge": true,
+  "npmrc": "@danielhammerl:registry=http://dham-raspberry:12345/",
+  "rangeStrategy": "update-lockfile",
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "automerge": true
+    }
+  ],
+  "ignoreDeps": [
+    "node"
+  ],
+  "ignoreTests": true,
+  "hostRules": [
+    {
+      "matchHost": "http://dham-raspberry:12345/",
+      "token": "foobar",
+      "enabled": true,
+      "hostType": "npm"
+    },
+    {
+      "matchHost": "registry.npmjs.org",
+      "enabled": true,
+      "hostType": "npm"
+    }
+  ]
+}
