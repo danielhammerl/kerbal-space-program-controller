@@ -7,7 +7,7 @@ FROM phusion/baseimage:noble-1.0.0
 RUN apt update
 RUN apt install apt-file -y
 RUN apt update
-RUN apt install libasio-dev protobuf-compiler cmake wget unzip g++ -y
+RUN apt install libasio-dev protobuf-compiler cmake wget unzip g++ git sudo -y
 
 WORKDIR /home/ubuntu
 
@@ -22,6 +22,18 @@ RUN cmake .
 RUN make
 RUN make install
 RUN ldconfig
+
+WORKDIR /home/ubuntu
+
+RUN git clone https://github.com/bitbank2/ArmbianIO.git
+WORKDIR /home/ubuntu/ArmbianIO
+RUN make
+
+WORKDIR /home/ubuntu
+
+RUN git clone https://github.com/bitbank2/MAX7219.git
+WORKDIR /home/ubuntu/MAX7219
+RUN make
 
 WORKDIR /home/ubuntu
 
