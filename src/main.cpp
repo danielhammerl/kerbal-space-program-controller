@@ -29,6 +29,8 @@
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 
+using namespace std;
+
 int DEBUG_ACTIVE = 0; // Global debug variable
 
 /******************************************************************************
