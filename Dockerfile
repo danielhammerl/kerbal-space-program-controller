@@ -25,18 +25,6 @@ RUN ldconfig
 
 WORKDIR /home/ubuntu
 
-RUN git clone https://github.com/bitbank2/ArmbianIO.git
-WORKDIR /home/ubuntu/ArmbianIO
-RUN make
-
-WORKDIR /home/ubuntu
-
-RUN git clone https://github.com/bitbank2/MAX7219.git
-WORKDIR /home/ubuntu/MAX7219
-RUN make
-
-WORKDIR /home/ubuntu
-
 RUN mkdir ksp-controller
 
 COPY ./src/main.cpp /home/ubuntu/ksp-controller
