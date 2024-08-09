@@ -39,19 +39,19 @@ int DEBUG_ACTIVE = 0; // Global debug variable
 
 //MAX7219/MAX7221's memory register addresses:
 // See Table 2 on page 7 in the Datasheet
-const char NoOp        = 0x00;
-const char Digit0      = 0x01;
-const char Digit1      = 0x02;
-const char Digit2      = 0x03;
-const char Digit3      = 0x04;
-const char Digit4      = 0x05;
-const char Digit5      = 0x06;
-const char Digit6      = 0x07;
-const char Digit7      = 0x08;
-const char DecodeMode  = 0x09;
-const char Intensity   = 0x0A;
-const char ScanLimit   = 0x0B;
-const char ShutDown    = 0x0C;
+const char NoOp = 0x00;
+const char Digit0 = 0x01;
+const char Digit1 = 0x02;
+const char Digit2 = 0x03;
+const char Digit3 = 0x04;
+const char Digit4 = 0x05;
+const char Digit5 = 0x06;
+const char Digit6 = 0x07;
+const char Digit7 = 0x08;
+const char DecodeMode = 0x09;
+const char Intensity = 0x0A;
+const char ScanLimit = 0x0B;
+const char ShutDown = 0x0C;
 const char DisplayTest = 0x0F;
 
 
@@ -62,6 +62,7 @@ const char numOfDevices = 2;
 ******************************************************************************/
 
 void setup();
+
 void loop();
 
 /******************************************************************************
@@ -74,8 +75,7 @@ void loop();
 ***   Class: RasPiSPI                                                       ***
 ******************************************************************************/
 
-class RasPiSPI
-{
+class RasPiSPI {
 private:
     int SpiFd; // File descriptor of spi port
 
@@ -93,12 +93,13 @@ public:
     void begin(int, int);
 
     void transfer(char);
+
     void endTransfer();
 };
 
 RasPiSPI::RasPiSPI() // CONSTRUCTOR
 {
-    if(DEBUG_ACTIVE > 0) {cout << "RasPiSPI Konstruktor" << endl;}
+    if (DEBUG_ACTIVE > 0) { cout << "RasPiSPI Konstruktor" << endl; }
 
     TxBuffer = new char[1024]; // Buffer for TxData
     RxBuffer = new char[1024]; // Buffer for RxData
@@ -106,9 +107,10 @@ RasPiSPI::RasPiSPI() // CONSTRUCTOR
     TxBufferIndex = 0;
     RxBufferIndex = 0;
 }
+
 RasPiSPI::~RasPiSPI() // DESTRUCTOR
 {
-    if(DEBUG_ACTIVE > 0) {cout << "RasPiSPI Destruktor" << endl;}
+    if (DEBUG_ACTIVE > 0) { cout << "RasPiSPI Destruktor" << endl; }
 
     delete[] TxBuffer;
     delete[] RxBuffer;
@@ -118,28 +120,23 @@ RasPiSPI::~RasPiSPI() // DESTRUCTOR
 
 RasPiSPI SPI; // Create class SPI
 
-void RasPiSPI::begin(int channel, int speed)
-{
-    if ((SpiFd = wiringPiSPISetup (channel, speed)) < 0)
-    {	// Open port for reading and writing
+void RasPiSPI::begin(int channel, int speed) {
+    if ((SpiFd = wiringPiSPISetup(channel, speed)) < 0) {    // Open port for reading and writing
         cout << "Failed to open SPI port " << channel << "! Please try with sudo" << endl;
     }
-    if(DEBUG_ACTIVE > 0) {cout << "Filehandle opened" << endl;}
+    if (DEBUG_ACTIVE > 0) { cout << "Filehandle opened" << endl; }
 }
 
-void RasPiSPI::transfer(char c)
-{
+void RasPiSPI::transfer(char c) {
     TxBuffer[TxBufferIndex] = c;
     TxBufferIndex++;
 }
-void RasPiSPI::endTransfer()
-{
+
+void RasPiSPI::endTransfer() {
     int temp = write(SpiFd, TxBuffer, TxBufferIndex); // Write the data from TxBuffer to the SPI bus...
-    if(DEBUG_ACTIVE > 1)
-    { // Debug level 2
+    if (DEBUG_ACTIVE > 1) { // Debug level 2
         cout << "Written: " << temp << " Index: " << TxBufferIndex << " Buffer: ";
-        for(int i = 0; i < TxBufferIndex; i++)
-        {
+        for (int i = 0; i < TxBufferIndex; i++) {
             cout << int(TxBuffer[i]) << " ";
         }
         cout << endl;
@@ -154,17 +151,13 @@ void RasPiSPI::endTransfer()
 
 
 // Writes data to the selected device or does broadcast if device number is 255
-void SetData(char adr, char data, char device)
-{
+void SetData(char adr, char data, char device) {
     // Count from top to bottom because first data which is sent is for the last device in the chain
-    for (int i = numOfDevices; i > 0; i--)
-    {
-        if ((i == device) || (device == 255))
-        {
+    for (int i = numOfDevices; i > 0; i--) {
+        if ((i == device) || (device == 255)) {
             SPI.transfer(adr);
             SPI.transfer(data);
-        }
-        else // if its not the selected device send the noop command
+        } else // if its not the selected device send the noop command
         {
             SPI.transfer(NoOp);
             SPI.transfer(0);
@@ -179,35 +172,25 @@ void SetData(char adr, char data, char device)
 void SetData(char adr, char data) { SetData(adr, data, 255); } // write to all devices (255 = Broadcast)
 
 void SetShutDown(char Mode) { SetData(ShutDown, !Mode); }
+
 void SetScanLimit(char Digits) { SetData(ScanLimit, Digits); }
+
 void SetIntensity(char intense) { SetData(Intensity, intense); }
+
 void SetDecodeMode(char Mode) { SetData(DecodeMode, Mode); }
 
 /******************************************************************************
 ***   Setup                                                                 ***
 ******************************************************************************/
 
-void setup()
-{
-    // The MAX7219 has officially no SPI / Microwire support like the MAX7221 but the
-    // serial interface is more or less the same like a SPI connection
+void setup() {
 
     SPI.begin();
 
-    // Disable the decode mode because at the moment i dont use 7-Segment displays
-    if(DEBUG_ACTIVE > 0) {cout << "SetDecodeMode(false);" << endl;}
     SetDecodeMode(false);
-    // Set the number of digits; start to count at 0
-    if(DEBUG_ACTIVE > 0) {cout << "SetScanLimit(7);" << endl;}
     SetScanLimit(7);
-    // Set the intensity between 0 and 15. Attention 0 is not off!
-    if(DEBUG_ACTIVE > 0) {cout << "SetIntensity(5);" << endl;}
     SetIntensity(5);
-    // Disable shutdown mode
-    if(DEBUG_ACTIVE > 0) {cout << "SetShutDown(false);" << endl;}
     SetShutDown(false);
-
-    if(DEBUG_ACTIVE > 0) {cout << "Write Patterns" << endl;}
 
     // Write some patterns
     SetData(Digit0, 0b10000000, 1);
@@ -228,7 +211,7 @@ void setup()
     SetData(Digit6, 0b01000000, 2);
     SetData(Digit7, 0b10000000, 2);
 
-    if(DEBUG_ACTIVE > 0) {cout << "Delay 1000" << endl;}
+    if (DEBUG_ACTIVE > 0) { cout << "Delay 1000" << endl; }
     delay(1000);
 
 }
@@ -237,32 +220,28 @@ void setup()
 ***   Loop                                                                  ***
 ******************************************************************************/
 
-void loop()
-{
+void loop() {
 
     //you may know this from space invaders
-    unsigned int rowBuffer[]=
+    unsigned int rowBuffer[] =
             {
-                    0b1110111,
-                    0b1110111,
-                    0b1110111,
-                    0b1110111,
-                    0b1110111,
-                    0b1110111,
-                    0b1110111,
-                    0b1110111
+                    0b0110000,
+                    0b1101101,
+                    0b1111001,
+                    0b0110011,
+                    0b1011011,
+                    0b1011111,
+                    0b1110000,
+                    0b1111111
             };
 
-    if(DEBUG_ACTIVE > 0) {cout << "Start with space invader animation" << endl;}
+    if (DEBUG_ACTIVE > 0) { cout << "Start with space invader animation" << endl; }
 
-    while(1)
-    {
-        for (int shiftCounter = 0; 15 >= shiftCounter; shiftCounter++)
-        {
-            for (int rowCounter = 0; 7 >= rowCounter; rowCounter++)
-            {
+    while (1) {
+        for (int shiftCounter = 0; 15 >= shiftCounter; shiftCounter++) {
+            for (int rowCounter = 0; 7 >= rowCounter; rowCounter++) {
                 // ...and then write them to the two devices
-                SetData(rowCounter+1, char(rowBuffer[rowCounter]), 1);
+                SetData(rowCounter + 1, char(rowBuffer[rowCounter]), 1);
             }
             delay(100);
         }
@@ -320,6 +299,7 @@ void get_altitude(const unsigned long long altitude) {
     std::cout << std::fixed << std::setprecision(1);
     std::cout << altitude << std::endl;
 }
+
 void onConnection() {
     std::cout << "Connected to KSP!" << std::endl;
     digitalWrite(26, HIGH);
@@ -338,8 +318,8 @@ std::string getHostName() {
 
 constexpr float normalizeShort(short value) {
     return value < 0
-               ? -static_cast<float>(value) / std::numeric_limits<short>::min()
-               : static_cast<float>(value) / std::numeric_limits<short>::max();
+           ? -static_cast<float>(value) / std::numeric_limits<short>::min()
+           : static_cast<float>(value) / std::numeric_limits<short>::max();
 }
 
 float flightControlSensitivity = .4f;
@@ -352,8 +332,7 @@ float flightControlSensitivity = .4f;
 #endif
     setup();
 
-    while(1)
-    {
+    while (1) {
         loop();
     }
 
@@ -418,7 +397,7 @@ float flightControlSensitivity = .4f;
                                 control.set_roll(valueForMovement);
                             }
                             break;
-                        default: ;
+                        default:;
                     }
                 }
             }
