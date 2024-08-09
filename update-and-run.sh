@@ -1,2 +1,2 @@
 #!/bin/bash
-git fetch --all && git pull && ./compile.sh && ./run.sh
+git fetch && git pull && ./compile.sh && ./run.sh

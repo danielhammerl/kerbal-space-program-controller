@@ -27,9 +27,9 @@ WORKDIR /home/ubuntu
 
 RUN mkdir ksp-controller
 
-COPY ./src/main.cpp /home/ubuntu/ksp-controller
+COPY ./src /home/ubuntu/ksp-controller/src
 
 WORKDIR /home/ubuntu/ksp-controller
 
-RUN g++ -o ksp-controller main.cpp -std=c++11 -lkrpc -lprotobuf -lz -O3 -D"KSP_CONTROLLER_DEV_MODE=true"
-ENTRYPOINT ./ksp-controller
+RUN g++ -o ksp-controller src/main.cpp -std=c++11 -lkrpc -lprotobuf -O3 -D"KSP_CONTROLLER_DEV_MODE=true"
+ENTRYPOINT ["./ksp-controller"]

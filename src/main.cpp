@@ -1,3 +1,4 @@
+#include <cmath>
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
@@ -8,57 +9,31 @@
 #include <fcntl.h>
 #include <linux/joystick.h>
 #include <unistd.h>
+#include "SevenSegment.h"
+#include "base-header.h"
+#include <sstream>
 
-#ifdef __JETBRAINS_IDE__
-#define KSP_CONTROLLER_DEV_MODE
-#endif
+void get_altitude(SevenSegment &sevenSegment, unsigned long long altitude) {
+    std::stringstream ss;
+    int exponent = 1; // 1 for meters, 4 for kilometers, 7 for megameters, ...
+    while(altitude > 1000000) {
+        if(exponent < 7) {
+            exponent += 3;
+            altitude /= 1000;
+        } else {
+            exponent++;
+            altitude /= 10;
+        }
+    }
 
-//#define DEBUG_MODE; // comment this line in for extended debug outputs
-
-#ifndef KSP_CONTROLLER_DEV_MODE
-#include <wiringPi.h>
-#else
-// mock wiringpi in dev env
-
-void wiringPiSetupGpio() {
-};
-#define INPUT 0
-#define OUTPUT 1
-#define HIGH 1
-#define LOW 0
-
-void pinMode(int pin, int mode) {
-#ifdef DEBUG_MODE
-    std::cout << "Call mocked pinMode with pin " << pin << " and mode " << mode << std::endl;
-#endif
-};
-
-int digitalRead(int pin) {
-#ifdef DEBUG_MODE
-    std::cout << "Call mocked digitalRead with pin " << pin << ". Note that this mock always returns LOW" << std::endl;
-    return LOW;
-#endif
-};
-
-void digitalWrite(int pin, int value) {
-#ifdef DEBUG_MODE
-    std::cout << "Call mocked digitalWrite with pin " << pin << " and value" << value << std::endl;
-#endif
-};
-
-#endif
-
-#ifdef KSP_CONTROLLER_DEV_MODE
-#define CLIENT_NAME "daniels ksp controller dev"
-#else
-#define CLIENT_NAME "daniels ksp controller"
-#endif
-
-
-void get_altitude(const unsigned long long altitude) {
-    std::cout << std::fixed << std::setprecision(1);
-    std::cout << altitude << std::endl;
+    if(exponent <= 9) {
+        ss << altitude << "-" << exponent;
+    } else {
+        ss << "EEEEEEEE";
+    }
+    sevenSegment.writeString(ss.str(), 0b00100000);
 }
+
 void onConnection() {
     std::cout << "Connected to KSP!" << std::endl;
     digitalWrite(26, HIGH);
@@ -69,18 +44,6 @@ void onDisconnection() {
     digitalWrite(26, LOW);
 }
 
-
-std::string getHostName() {
-    const auto env = std::getenv("KSP_SERVER_HOSTNAME");
-    return env ? env : "daniel-MS-7E26";
-}
-
-constexpr float normalizeShort(short value) {
-    return value < 0
-               ? -static_cast<float>(value) / std::numeric_limits<short>::min()
-               : static_cast<float>(value) / std::numeric_limits<short>::max();
-}
-
 float flightControlSensitivity = .4f;
 
 [[noreturn]] int main() {
@@ -89,6 +52,9 @@ float flightControlSensitivity = .4f;
 #ifdef KSP_CONTROLLER_DEV_MODE
     std::cout << "We are in Dev mode!" << std::endl;
 #endif
+
+    SevenSegment sevenSegment;
+
     wiringPiSetupGpio();
 
     pinMode(4, OUTPUT);
@@ -163,7 +129,7 @@ float flightControlSensitivity = .4f;
 
             digitalWrite(4, lights ? HIGH : LOW);
 
-            //get_altitude(static_cast<unsigned long long>(flight.surface_altitude()));
+            get_altitude(sevenSegment, static_cast<unsigned long long>(flight.surface_altitude()));
         } else {
             if (isConnected) {
                 onDisconnection();
