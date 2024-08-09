@@ -243,14 +243,14 @@ void loop()
     //you may know this from space invaders
     unsigned int rowBuffer[]=
             {
-                    0b0010000010000000,
-                    0b0001000100000000,
-                    0b0011111110000000,
-                    0b0110111011000000,
-                    0b1111111111100000,
-                    0b1011111110100000,
-                    0b1010000010100000,
-                    0b0001101100000000
+                    0b1110111,
+                    0b1110111,
+                    0b1110111,
+                    0b1110111,
+                    0b1110111,
+                    0b1110111,
+                    0b1110111,
+                    0b1110111
             };
 
     if(DEBUG_ACTIVE > 0) {cout << "Start with space invader animation" << endl;}
@@ -261,13 +261,8 @@ void loop()
         {
             for (int rowCounter = 0; 7 >= rowCounter; rowCounter++)
             {
-                // roll the 16bits...
-                // The information how to roll is from http://arduino.cc/forum/index.php?topic=124188.0
-                rowBuffer[rowCounter] = ((rowBuffer[rowCounter] & 0x8000)?0x01:0x00) | (rowBuffer[rowCounter] << 1);
-
                 // ...and then write them to the two devices
                 SetData(rowCounter+1, char(rowBuffer[rowCounter]), 1);
-                SetData(rowCounter+1, char(rowBuffer[rowCounter]>>8), 2);
             }
             delay(100);
         }
