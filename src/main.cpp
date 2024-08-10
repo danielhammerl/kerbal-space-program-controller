@@ -58,9 +58,9 @@ float flightControlSensitivity = .4f;
     wiringPiSetupGpio();
 
     // https://raspi.tv/2013/using-the-mcp23017-port-expander-with-wiringpi2-to-give-you-16-new-gpio-ports-part-3
-    mcp23017Setup(65, 0x20);
+    mcp23017Setup(100, 0x20);
 
-    pinMode(65, OUTPUT);
+    pinMode(100, OUTPUT);
 
     pinMode(4, OUTPUT);
     //pinMode(26, OUTPUT);
