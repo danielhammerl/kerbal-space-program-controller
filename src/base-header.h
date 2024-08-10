@@ -10,6 +10,7 @@
 #ifndef KSP_CONTROLLER_DEV_MODE
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
+#include <mcp23017.h>
 #else
 // mock wiringpi in dev env
 
