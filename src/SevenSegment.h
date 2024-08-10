@@ -82,13 +82,14 @@ public:
         if(toWrite.length() > 8) {
             throw std::invalid_argument("Can only write max 8 digit strings to 7 segment");
         }
+
         if(toWrite.length() < 8) {
             // pad string left with ' ' to 8 chars
             toWrite.insert(toWrite.begin(), 8 - toWrite.size(), ' ');
         }
 
         for(unsigned index = 1; index <= toWrite.length(); index++) {
-            bool hasDecimalPlace = decimalPlaceBitmask >> (index-1) &0x1;
+            bool hasDecimalPlace = decimalPlaceBitmask >> (index-1) & 0x1;
 
             auto dataValue = SEVEN_SEGMENT_FONT.at(toWrite[toWrite.length() - index]);
             if(hasDecimalPlace) {
