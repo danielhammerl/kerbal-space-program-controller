@@ -27,7 +27,7 @@ void get_altitude(SevenSegment &sevenSegment, unsigned long long altitude) {
     }
 
     if(exponent <= 9) {
-        ss << altitude << "-" << exponent;
+        ss << altitude << "E" << exponent;
     } else {
         ss << "EEEEEEEE";
     }
