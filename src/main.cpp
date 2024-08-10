@@ -56,6 +56,9 @@ float flightControlSensitivity = .4f;
     SevenSegment sevenSegment;
 
     wiringPiSetupGpio();
+    mcp23017Setup(65, 0x20);
+
+    pinMode(65, OUTPUT);
 
     pinMode(4, OUTPUT);
     //pinMode(26, OUTPUT);
@@ -127,7 +130,7 @@ float flightControlSensitivity = .4f;
             auto lights = vessel.control().lights();
             //std::cout << "lights: " << (lights ? "on" : "off") << std::endl;
 
-            digitalWrite(4, lights ? HIGH : LOW);
+            digitalWrite(65, lights ? HIGH : LOW);
 
             get_altitude(sevenSegment, static_cast<unsigned long long>(flight.surface_altitude()));
         } else {

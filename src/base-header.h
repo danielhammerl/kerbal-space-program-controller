@@ -14,6 +14,7 @@
 // mock wiringpi in dev env
 
 static int wiringPiSPISetup(int channel, int speed, int mod) {return 0;};
+static int mcp23017Setup(int pin_base, int addr) {return 0;};
 static int wiringPiSPISetup (int channel, int speed) {return 0;};
 static int wiringPiSetupGpio() {return 0;};
 static void delay(unsigned int howLong) {};
