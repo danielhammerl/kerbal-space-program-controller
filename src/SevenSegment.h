@@ -52,7 +52,7 @@ public:
             std::cout << "Cannot connect to spi port!" << std::endl;
         }
 
-        this->setIntensity(5);
+        this->setIntensity(4);
         this->setScanLimit(7);
         this->wakeUp();
     }
