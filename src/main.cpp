@@ -48,6 +48,7 @@ float flightControlSensitivity = .4f;
 
 [[noreturn]] int main() {
     std::cout << "Starting ksp controller ..." << std::endl;
+    std::cout << "Trying to connect to " << getHostName() << std::endl;
 
 #ifdef KSP_CONTROLLER_DEV_MODE
     std::cout << "We are in Dev mode!" << std::endl;
