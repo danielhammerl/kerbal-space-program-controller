@@ -87,6 +87,7 @@ public:
             // pad string left with ' ' to 8 chars
             toWrite.insert(toWrite.begin(), 8 - toWrite.size(), ' ');
         }
+        std::cout << toWrite << std::endl;
 
         for(unsigned index = 1; index <= toWrite.length(); index++) {
             bool hasDecimalPlace = decimalPlaceBitmask >> (index-1) & 0x1;

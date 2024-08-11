@@ -31,7 +31,6 @@ void get_altitude(SevenSegment &sevenSegment, unsigned long long altitude) {
     } else {
         ss << "EEEEEEEE";
     }
-    std::cout << ss.str() << std::endl;
     sevenSegment.writeString(ss.str(), 0b00100000);
 }
 
