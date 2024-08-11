@@ -43,7 +43,7 @@ static std::map<char, unsigned char> SEVEN_SEGMENT_FONT = {
 class SevenSegment {
 public:
     SevenSegment() {
-        bufferData = new unsigned char[128];
+        bufferData = new unsigned char[256];
         bufferIndex = 0;
 
         spiFileDescriptor = wiringPiSPISetup(0, 1000000);
