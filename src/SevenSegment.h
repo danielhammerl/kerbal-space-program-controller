@@ -53,7 +53,7 @@ public:
         }
 
         this->setIntensity(4);
-        this->setScanLimit(8);
+        this->setScanLimit(7);
         this->wakeUp();
     }
 
