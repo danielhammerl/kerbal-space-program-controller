@@ -25,6 +25,7 @@ Controls:
 
 Indicators:
   - Altitude (over ground) (7 segment anzeige)
+  - SPEED (7 segment anzeige)
   - Electrical Charge (gauge)
   - Fuel in current stage (gauge)
   - Dichte Atmosphäre (gauge)

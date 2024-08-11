@@ -133,7 +133,7 @@ float flightControlSensitivity = .4f;
             auto lights = vessel.control().lights();
             //std::cout << "lights: " << (lights ? "on" : "off") << std::endl;
 
-            digitalWrite(65, lights ? HIGH : LOW);
+            digitalWrite(100, lights ? HIGH : LOW);
 
             get_altitude(sevenSegment, static_cast<unsigned long long>(flight.surface_altitude()));
         } else {
