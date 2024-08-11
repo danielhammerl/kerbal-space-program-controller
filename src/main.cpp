@@ -77,7 +77,7 @@ float flightControlSensitivity = .4f;
     onConnection();
     bool isConnected = true;
 
-
+//
     // if false it's in ROT mode, if true in LIN mode
     volatile bool rcsInLinMode = false; //volatile for now only to suppress CLion warning, Remove in future
 
