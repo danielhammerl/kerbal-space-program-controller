@@ -52,10 +52,10 @@ void init() {
     delete sevenSegment;
     sevenSegment = new SevenSegment();
 
+    wiringPiSetupGpio();
+
     pinModeAlt(2, WPI_ALT0);
     pinModeAlt(3, WPI_ALT0);
-
-    wiringPiSetupGpio();
 }
 
 bool resetTriggered = false;
