@@ -16,8 +16,8 @@
 void get_altitude(SevenSegment *sevenSegment, unsigned long long altitude) {
     std::stringstream ss;
     int exponent = 1; // 1 for meters, 4 for kilometers, 7 for megameters, ...
-    while(altitude > 1000000) {
-        if(exponent < 7) {
+    while (altitude > 1000000) {
+        if (exponent < 7) {
             exponent += 3;
             altitude /= 1000;
         } else {
@@ -26,7 +26,7 @@ void get_altitude(SevenSegment *sevenSegment, unsigned long long altitude) {
         }
     }
 
-    if(exponent <= 9) {
+    if (exponent <= 9) {
         ss << altitude << "E" << exponent;
     } else {
         ss << "EEEEEEEE";
@@ -47,6 +47,7 @@ void onDisconnection() {
 float flightControlSensitivity = .4f;
 
 SevenSegment *sevenSegment = NULL;
+
 void init() {
     delete sevenSegment;
     sevenSegment = new SevenSegment();
@@ -65,6 +66,8 @@ bool resetTriggered = false;
 [[noreturn]] int main() {
     std::cout << "Starting ksp controller ..." << std::endl;
     std::cout << "Trying to connect to " << getHostName() << std::endl;
+
+    init();
 
 #ifdef KSP_CONTROLLER_DEV_MODE
     std::cout << "We are in Dev mode!" << std::endl;
@@ -87,8 +90,8 @@ bool resetTriggered = false;
 
     // endless loop
     while (true) {
-        bool resetIsPressed = digitalRead(16) == HIGH;
-        if(resetIsPressed) {
+        bool resetIsPressed = (digitalRead(16) == HIGH);
+        if (resetIsPressed) {
             init();
             resetTriggered = true;
             std::cout << "Reset controller!" << std::endl;
@@ -135,7 +138,7 @@ bool resetTriggered = false;
                                 control.set_roll(valueForMovement);
                             }
                             break;
-                        default: ;
+                        default:;
                     }
                 }
             }
