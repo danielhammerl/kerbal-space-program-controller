@@ -52,6 +52,9 @@ void init() {
     delete sevenSegment;
     sevenSegment = new SevenSegment();
 
+    pinModeAlt(2, ALT0);
+    pinModeAlt(3, ALT0);
+
     wiringPiSetupGpio();
 }
 

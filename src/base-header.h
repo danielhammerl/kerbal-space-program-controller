@@ -14,20 +14,26 @@
 #else
 // mock wiringpi in dev env
 
-static int wiringPiSPISetup(int channel, int speed, int mod) {return 0;};
-static int mcp23017Setup(int pin_base, int addr) {return 0;};
-static int wiringPiSPISetup (int channel, int speed) {return 0;};
-static int wiringPiSetupGpio() {return 0;};
+static int wiringPiSPISetup(int channel, int speed, int mod) { return 0; };
+
+static int mcp23017Setup(int pin_base, int addr) { return 0; };
+
+static int wiringPiSPISetup(int channel, int speed) { return 0; };
+
+static int wiringPiSetupGpio() { return 0; };
+
 static void delay(unsigned int howLong) {};
 
 #define INPUT 0
 #define OUTPUT 1
+#define ALT0 4
+
 #define HIGH 1
 #define LOW 0
 
-#define	PUD_OFF 0
-#define	PUD_DOWN 1
-#define	PUD_UP 2
+#define    PUD_OFF 0
+#define    PUD_DOWN 1
+#define    PUD_UP 2
 
 static void pinMode(int pin, int mode) {
 #ifdef DEBUG_MODE
@@ -35,11 +41,13 @@ static void pinMode(int pin, int mode) {
 #endif
 };
 
+static void pinModeAlt(int pin, int mode) {};
+
 static int digitalRead(int pin) {
 #ifdef DEBUG_MODE
     std::cout << "Call mocked digitalRead with pin " << pin << ". Note that this mock always returns LOW" << std::endl;
-    return LOW;
 #endif
+    return LOW;
 };
 
 static void digitalWrite(int pin, int value) {
@@ -69,8 +77,8 @@ static std::string getHostName() {
 
 static constexpr float normalizeShort(short value) {
     return value < 0
-               ? -static_cast<float>(value) / std::numeric_limits<short>::min()
-               : static_cast<float>(value) / std::numeric_limits<short>::max();
+           ? -static_cast<float>(value) / std::numeric_limits<short>::min()
+           : static_cast<float>(value) / std::numeric_limits<short>::max();
 }
 
 #endif
