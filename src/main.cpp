@@ -53,12 +53,6 @@ void init() {
     sevenSegment = new SevenSegment();
 
     wiringPiSetupGpio();
-    // https://raspi.tv/2013/using-the-mcp23017-port-expander-with-wiringpi2-to-give-you-16-new-gpio-ports-part-3
-    mcp23017Setup(100, 0x20);
-
-    pinMode(100, OUTPUT);
-    pinMode(16, INPUT);
-    pullUpDnControl(16, PUD_DOWN);
 }
 
 bool resetTriggered = false;
@@ -68,6 +62,13 @@ bool resetTriggered = false;
     std::cout << "Trying to connect to " << getHostName() << std::endl;
 
     init();
+
+    // https://raspi.tv/2013/using-the-mcp23017-port-expander-with-wiringpi2-to-give-you-16-new-gpio-ports-part-3
+    mcp23017Setup(100, 0x20);
+
+    pinMode(100, OUTPUT);
+    pinMode(16, INPUT);
+    pullUpDnControl(16, PUD_DOWN);
 
 #ifdef KSP_CONTROLLER_DEV_MODE
     std::cout << "We are in Dev mode!" << std::endl;
