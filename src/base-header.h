@@ -26,7 +26,7 @@ static void delay(unsigned int howLong) {};
 
 #define INPUT 0
 #define OUTPUT 1
-#define ALT0 4
+#define WPI_ALT0 4
 
 #define HIGH 1
 #define LOW 0
