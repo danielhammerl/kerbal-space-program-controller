@@ -58,6 +58,8 @@ static void digitalWrite(int pin, int value) {
 
 static void pullUpDnControl(int pin, int mode) {};
 
+static void* wiringPiNodes;
+
 #endif
 
 #ifdef KSP_CONTROLLER_DEV_MODE

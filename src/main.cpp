@@ -46,16 +46,41 @@ void onDisconnection() {
 
 float flightControlSensitivity = .4f;
 
-SevenSegment *sevenSegment = NULL;
+SevenSegment *sevenSegment = nullptr;
 
 void init() {
     delete sevenSegment;
-    sevenSegment = new SevenSegment();
+
+    wiringPiNodes = nullptr;
 
     wiringPiSetupGpio();
 
+    pinModeAlt(2, OUTPUT);
+    pinModeAlt(3, OUTPUT);
+
+    pinModeAlt(7, OUTPUT);
+    pinModeAlt(8, OUTPUT);
+    pinModeAlt(9, OUTPUT);
+    pinModeAlt(10, OUTPUT);
+    pinModeAlt(11, OUTPUT);
+
+    wiringPiNodes = nullptr;
+
+    wiringPiSetupGpio();
+
+    pinModeAlt(7, WPI_ALT0);
+    pinModeAlt(8, WPI_ALT0);
+    pinModeAlt(9, WPI_ALT0);
+    pinModeAlt(10, WPI_ALT0);
+    pinModeAlt(11, WPI_ALT0);
+
+    sevenSegment = new SevenSegment();
+
     pinModeAlt(2, WPI_ALT0);
     pinModeAlt(3, WPI_ALT0);
+
+    // https://raspi.tv/2013/using-the-mcp23017-port-expander-with-wiringpi2-to-give-you-16-new-gpio-ports-part-3
+    mcp23017Setup(100, 0x20);
 }
 
 bool resetTriggered = false;
@@ -65,9 +90,6 @@ bool resetTriggered = false;
     std::cout << "Trying to connect to " << getHostName() << std::endl;
 
     init();
-
-    // https://raspi.tv/2013/using-the-mcp23017-port-expander-with-wiringpi2-to-give-you-16-new-gpio-ports-part-3
-    mcp23017Setup(100, 0x20);
 
     pinMode(100, OUTPUT);
     pinMode(16, INPUT);
