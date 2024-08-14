@@ -70,8 +70,6 @@ bool resetTriggered = false;
     std::cout << "We are in Dev mode!" << std::endl;
 #endif
 
-    //pinMode(26, OUTPUT);
-
     // joystick has to be js0, means if multiple joysticks are connected only one works
     auto joystickDevice = open("/dev/input/js0", O_RDONLY | O_NONBLOCK);
 
@@ -93,6 +91,7 @@ bool resetTriggered = false;
         if(resetIsPressed) {
             init();
             resetTriggered = true;
+            std::cout << "Reset controller!" << std::endl;
         } else {
             resetTriggered = false;
         }
