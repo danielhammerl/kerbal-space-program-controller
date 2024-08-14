@@ -25,6 +25,10 @@ static void delay(unsigned int howLong) {};
 #define HIGH 1
 #define LOW 0
 
+#define	PUD_OFF 0
+#define	PUD_DOWN 1
+#define	PUD_UP 2
+
 static void pinMode(int pin, int mode) {
 #ifdef DEBUG_MODE
     std::cout << "Call mocked pinMode with pin " << pin << " and mode " << mode << std::endl;
@@ -43,6 +47,8 @@ static void digitalWrite(int pin, int value) {
     std::cout << "Call mocked digitalWrite with pin " << pin << " and value" << value << std::endl;
 #endif
 };
+
+static void pullUpDnControl(int pin, int mode) {};
 
 #endif
 

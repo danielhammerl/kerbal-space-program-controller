@@ -13,7 +13,7 @@
 #include "base-header.h"
 #include <sstream>
 
-void get_altitude(SevenSegment &sevenSegment, unsigned long long altitude) {
+void get_altitude(SevenSegment *sevenSegment, unsigned long long altitude) {
     std::stringstream ss;
     int exponent = 1; // 1 for meters, 4 for kilometers, 7 for megameters, ...
     while(altitude > 1000000) {
@@ -31,7 +31,7 @@ void get_altitude(SevenSegment &sevenSegment, unsigned long long altitude) {
     } else {
         ss << "EEEEEEEE";
     }
-    sevenSegment.writeString(ss.str(), 0b00100000);
+    sevenSegment->writeString(ss.str(), 0b00100000);
 }
 
 void onConnection() {
@@ -46,6 +46,22 @@ void onDisconnection() {
 
 float flightControlSensitivity = .4f;
 
+SevenSegment *sevenSegment = NULL;
+void init() {
+    delete sevenSegment;
+    sevenSegment = new SevenSegment();
+
+    wiringPiSetupGpio();
+    // https://raspi.tv/2013/using-the-mcp23017-port-expander-with-wiringpi2-to-give-you-16-new-gpio-ports-part-3
+    mcp23017Setup(100, 0x20);
+
+    pinMode(100, OUTPUT);
+    pinMode(16, INPUT);
+    pullUpDnControl(16, PUD_DOWN);
+}
+
+bool resetTriggered = false;
+
 [[noreturn]] int main() {
     std::cout << "Starting ksp controller ..." << std::endl;
     std::cout << "Trying to connect to " << getHostName() << std::endl;
@@ -54,16 +70,6 @@ float flightControlSensitivity = .4f;
     std::cout << "We are in Dev mode!" << std::endl;
 #endif
 
-    SevenSegment sevenSegment;
-
-    wiringPiSetupGpio();
-
-    // https://raspi.tv/2013/using-the-mcp23017-port-expander-with-wiringpi2-to-give-you-16-new-gpio-ports-part-3
-    mcp23017Setup(100, 0x20);
-
-    pinMode(100, OUTPUT);
-
-    pinMode(4, OUTPUT);
     //pinMode(26, OUTPUT);
 
     // joystick has to be js0, means if multiple joysticks are connected only one works
@@ -83,6 +89,14 @@ float flightControlSensitivity = .4f;
 
     // endless loop
     while (true) {
+        bool resetIsPressed = digitalRead(16) == HIGH;
+        if(resetIsPressed) {
+            init();
+            resetTriggered = true;
+        } else {
+            resetTriggered = false;
+        }
+
         if (krpc.current_game_scene() == krpc::services::KRPC::GameScene::flight) {
             if (!isConnected) {
                 onConnection();
