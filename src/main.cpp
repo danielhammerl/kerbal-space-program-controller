@@ -84,7 +84,6 @@ bool resetTriggered = false;
     onConnection();
     bool isConnected = true;
 
-//
     // if false it's in ROT mode, if true in LIN mode
     volatile bool rcsInLinMode = false; //volatile for now only to suppress CLion warning, Remove in future
 
@@ -143,11 +142,7 @@ bool resetTriggered = false;
                 }
             }
 
-            //bool light = true;// change
-            //vessel.control().set_lights(light);
-
             auto lights = vessel.control().lights();
-            //std::cout << "lights: " << (lights ? "on" : "off") << std::endl;
 
             digitalWrite(100, lights ? HIGH : LOW);
 
