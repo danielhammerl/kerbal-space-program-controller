@@ -91,7 +91,7 @@ bool resetTriggered = false;
     // endless loop
     while (true) {
         bool resetIsPressed = (digitalRead(16) == HIGH);
-        if (resetIsPressed) {
+        if (resetIsPressed && !resetTriggered) {
             init();
             resetTriggered = true;
             std::cout << "Reset controller!" << std::endl;
