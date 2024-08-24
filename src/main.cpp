@@ -62,9 +62,21 @@ bool actionGroupsPressed[10] = {false, false, false, false, false, false, false,
     // https://raspi.tv/2013/using-the-mcp23017-port-expander-with-wiringpi2-to-give-you-16-new-gpio-ports-part-3
     mcp23017Setup(100, 0x20);
 
-    pinMode(100, OUTPUT);
-    pinMode(106, INPUT);
-    pinMode(105, INPUT);
+    pinMode(100, OUTPUT); // light on / off (temp)
+    pinMode(106, INPUT); // action group 0
+    pinMode(105, INPUT); // action group 1
+
+    pinMode(112, OUTPUT); // high G
+    pinMode(113, OUTPUT); // heat shield warning
+    pinMode(114, OUTPUT); // connected to commnet
+    pinMode(115, OUTPUT); // connected to ksp
+
+    // test mode
+    digitalWrite(100, HIGH);
+    digitalWrite(112, HIGH);
+    digitalWrite(113, HIGH);
+    digitalWrite(114, HIGH);
+    digitalWrite(115, HIGH);
 
     // joystick has to be js0, means if multiple joysticks are connected only one works
     auto joystickDevice = open("/dev/input/js0", O_RDONLY | O_NONBLOCK);
