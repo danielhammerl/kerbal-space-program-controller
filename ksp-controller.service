@@ -4,6 +4,7 @@ Description=KSP Controller
 [Service]
 Type=simple
 ExecStart=/home/pi/kerbal-space-program-controller/update-and-run.sh
+WorkingDirectory=/home/pi/kerbal-space-program-controller
 Restart=on-failure
 RestartSec=10
 
