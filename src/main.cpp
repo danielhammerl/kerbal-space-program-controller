@@ -63,8 +63,8 @@ bool actionGroupsPressed[10] = {false, false, false, false, false, false, false,
     mcp23017Setup(100, 0x20);
 
     pinMode(100, OUTPUT);
-    pinMode(101, INPUT);
-    pinMode(102, INPUT);
+    pinMode(107, INPUT);
+    pinMode(106, INPUT);
 
     // joystick has to be js0, means if multiple joysticks are connected only one works
     auto joystickDevice = open("/dev/input/js0", O_RDONLY | O_NONBLOCK);
@@ -131,7 +131,7 @@ bool actionGroupsPressed[10] = {false, false, false, false, false, false, false,
 
             digitalWrite(100, lights ? HIGH : LOW);
 
-            if (digitalRead(101) == HIGH) {
+            if (digitalRead(107) == HIGH) {
                 if(!actionGroupsPressed[0]) {
                     actionGroupsPressed[0] = true;
                     vessel.control().toggle_action_group(0);
@@ -141,7 +141,7 @@ bool actionGroupsPressed[10] = {false, false, false, false, false, false, false,
                 actionGroupsPressed[0] = false;
             }
 
-            if (digitalRead(102) == HIGH) {
+            if (digitalRead(106) == HIGH) {
                 if(!actionGroupsPressed[1]) {
                     actionGroupsPressed[1] = true;
                     vessel.control().toggle_action_group(1);
