@@ -7,6 +7,7 @@ ExecStart=/home/pi/kerbal-space-program-controller/update-and-run.sh
 WorkingDirectory=/home/pi/kerbal-space-program-controller
 Restart=on-failure
 RestartSec=10
+EnvironmentFile=/etc/environment
 
 [Install]
 WantedBy=multi-user.target
