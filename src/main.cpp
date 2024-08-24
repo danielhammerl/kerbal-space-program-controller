@@ -71,13 +71,6 @@ bool actionGroupsPressed[10] = {false, false, false, false, false, false, false,
     pinMode(114, OUTPUT); // connected to commnet
     pinMode(115, OUTPUT); // connected to ksp
 
-    // test mode
-    digitalWrite(100, HIGH);
-    digitalWrite(112, HIGH);
-    digitalWrite(113, HIGH);
-    digitalWrite(114, HIGH);
-    digitalWrite(115, HIGH);
-
     // joystick has to be js0, means if multiple joysticks are connected only one works
     auto joystickDevice = open("/dev/input/js0", O_RDONLY | O_NONBLOCK);
 
@@ -142,6 +135,12 @@ bool actionGroupsPressed[10] = {false, false, false, false, false, false, false,
             auto lights = vessel.control().lights();
 
             digitalWrite(100, lights ? HIGH : LOW);
+
+            // test mode
+            digitalWrite(112, HIGH);
+            digitalWrite(113, HIGH);
+            digitalWrite(114, HIGH);
+            digitalWrite(115, HIGH);
 
             if (digitalRead(106) == HIGH) {
                 if(!actionGroupsPressed[0]) {
