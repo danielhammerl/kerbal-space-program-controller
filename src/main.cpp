@@ -64,6 +64,7 @@ bool actionGroupsPressed[10] = {false, false, false, false, false, false, false,
 
     pinMode(100, OUTPUT);
     pinMode(101, INPUT);
+    pinMode(102, INPUT);
 
     // joystick has to be js0, means if multiple joysticks are connected only one works
     auto joystickDevice = open("/dev/input/js0", O_RDONLY | O_NONBLOCK);
@@ -129,8 +130,8 @@ bool actionGroupsPressed[10] = {false, false, false, false, false, false, false,
             auto lights = vessel.control().lights();
 
             digitalWrite(100, lights ? HIGH : LOW);
-            auto actionGroup0 = digitalRead(101); // action group 0
-            if (actionGroup0 == HIGH) {
+
+            if (digitalRead(101) == HIGH) {
                 if(!actionGroupsPressed[0]) {
                     actionGroupsPressed[0] = true;
                     vessel.control().toggle_action_group(0);
@@ -138,6 +139,16 @@ bool actionGroupsPressed[10] = {false, false, false, false, false, false, false,
                 }
             } else {
                 actionGroupsPressed[0] = false;
+            }
+
+            if (digitalRead(102) == HIGH) {
+                if(!actionGroupsPressed[1]) {
+                    actionGroupsPressed[1] = true;
+                    vessel.control().toggle_action_group(1);
+                    std::cout << "trigger action group 1" << std::endl;
+                }
+            } else {
+                actionGroupsPressed[1] = false;
             }
 
             get_altitude(sevenSegment, static_cast<unsigned long long>(flight.surface_altitude()));
