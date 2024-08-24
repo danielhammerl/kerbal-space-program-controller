@@ -53,6 +53,7 @@ public:
         this->setIntensity(4);
         this->setScanLimit(7);
         this->wakeUp();
+        this->sendData(DISPLAY_TEST, 1);
     }
 
     ~SevenSegment() {
