@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e # this makes the script fail on error
 git fetch
 
 output=$(git pull)
