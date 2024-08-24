@@ -43,9 +43,6 @@ static std::map<char, unsigned char> SEVEN_SEGMENT_FONT = {
 class SevenSegment {
 public:
     SevenSegment() {
-        bufferData = new unsigned char[256];
-        bufferIndex = 0;
-
         spiFileDescriptor = wiringPiSPISetup(0, 1000000);
 
         if (spiFileDescriptor < 0) {
@@ -59,16 +56,12 @@ public:
     }
 
     ~SevenSegment() {
-        delete[] bufferData;
-
         close(spiFileDescriptor);
     }
 
     void sendData(unsigned char registerAddress, unsigned char data)  {
-        // when having multiple devices connected this works different, in that case you have to iterate through the devices, starting with the latest and
-        // ending with device number 1, and sending the data only on the device you want, on the others you have to send NOOP
-        this->writeSpi(registerAddress, data);
-        this->sendSpiData();
+        write(spiFileDescriptor, registerAddress, 0);
+        write(spiFileDescriptor, data, 1);
     }
 
     void shutdown() { sendData(SHUTDOWN, 0); }
@@ -105,20 +98,6 @@ public:
 
 private:
     int spiFileDescriptor;
-    unsigned char *bufferData;
-    int bufferIndex;
-
-    void sendSpiData() {
-        write(spiFileDescriptor, bufferData, bufferIndex);
-        bufferIndex = 0;
-    }
-
-    void writeSpi(unsigned char registerAddress, unsigned char data) {
-        bufferData[bufferIndex] = registerAddress;
-        bufferIndex++;
-        bufferData[bufferIndex] = data;
-        bufferIndex++;
-    }
 };
 
 

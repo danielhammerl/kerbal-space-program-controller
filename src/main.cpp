@@ -63,9 +63,6 @@ float flightControlSensitivity = .4f;
 
     pinMode(100, OUTPUT);
 
-    pinMode(4, OUTPUT);
-    //pinMode(26, OUTPUT);
-
     // joystick has to be js0, means if multiple joysticks are connected only one works
     auto joystickDevice = open("/dev/input/js0", O_RDONLY | O_NONBLOCK);
 
@@ -127,11 +124,7 @@ float flightControlSensitivity = .4f;
                 }
             }
 
-            //bool light = true;// change
-            //vessel.control().set_lights(light);
-
             auto lights = vessel.control().lights();
-            //std::cout << "lights: " << (lights ? "on" : "off") << std::endl;
 
             digitalWrite(100, lights ? HIGH : LOW);
 
