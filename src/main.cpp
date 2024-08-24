@@ -134,6 +134,7 @@ bool actionGroupsPressed[10] = {false, false, false, false, false, false, false,
                 if(!actionGroupsPressed[0]) {
                     actionGroupsPressed[0] = true;
                     vessel.control().toggle_action_group(0);
+                    std::cout << "trigger action group 0" << std::endl;
                 }
             } else {
                 actionGroupsPressed[0] = false;
