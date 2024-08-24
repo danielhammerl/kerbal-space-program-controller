@@ -1,0 +1,2 @@
+MCP23017 sometimes become unstable
+MAX7219 sometimes become unstable and cannot be reseted wihtout fully powering off and on again
