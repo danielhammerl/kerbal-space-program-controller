@@ -60,8 +60,8 @@ public:
     }
 
     void sendData(unsigned char registerAddress, unsigned char data)  {
-        write(spiFileDescriptor, registerAddress, 0);
-        write(spiFileDescriptor, data, 1);
+        write(spiFileDescriptor, (void*)registerAddress, 0);
+        write(spiFileDescriptor, (void*)data, 1);
     }
 
     void shutdown() { sendData(SHUTDOWN, 0); }
