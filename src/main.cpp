@@ -16,8 +16,8 @@
 void get_altitude(SevenSegment &sevenSegment, unsigned long long altitude) {
     std::stringstream ss;
     int exponent = 1; // 1 for meters, 4 for kilometers, 7 for megameters, ...
-    while(altitude > 1000000) {
-        if(exponent < 7) {
+    while (altitude > 1000000) {
+        if (exponent < 7) {
             exponent += 3;
             altitude /= 1000;
         } else {
@@ -26,7 +26,7 @@ void get_altitude(SevenSegment &sevenSegment, unsigned long long altitude) {
         }
     }
 
-    if(exponent <= 9) {
+    if (exponent <= 9) {
         ss << altitude << "E" << exponent;
     } else {
         ss << "EEEEEEEE";
@@ -45,6 +45,7 @@ void onDisconnection() {
 }
 
 float flightControlSensitivity = .4f;
+bool actionGroupsPressed[10] = {false, false, false, false, false, false, false, false, false, false};
 
 [[noreturn]] int main() {
     std::cout << "Starting ksp controller ..." << std::endl;
@@ -62,6 +63,7 @@ float flightControlSensitivity = .4f;
     mcp23017Setup(100, 0x20);
 
     pinMode(100, OUTPUT);
+    pinMode(101, INPUT);
 
     // joystick has to be js0, means if multiple joysticks are connected only one works
     auto joystickDevice = open("/dev/input/js0", O_RDONLY | O_NONBLOCK);
@@ -119,7 +121,7 @@ float flightControlSensitivity = .4f;
                                 control.set_roll(valueForMovement);
                             }
                             break;
-                        default: ;
+                        default:;
                     }
                 }
             }
@@ -127,6 +129,15 @@ float flightControlSensitivity = .4f;
             auto lights = vessel.control().lights();
 
             digitalWrite(100, lights ? HIGH : LOW);
+            auto actionGroup0 = digitalRead(101); // action group 0
+            if (actionGroup0 == HIGH) {
+                if(!actionGroupsPressed[0]) {
+                    actionGroupsPressed[0] = true;
+                    vessel.control().toggle_action_group(0);
+                }
+            } else {
+                actionGroupsPressed[0] = false;
+            }
 
             get_altitude(sevenSegment, static_cast<unsigned long long>(flight.surface_altitude()));
         } else {
