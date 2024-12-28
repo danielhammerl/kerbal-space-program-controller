@@ -7,6 +7,8 @@ Runs only on raspberry pi with wiringPi installed.
 Uses Raspi GPIO interface and I2C AND SPI bus
 Ensure I2C and SPI are enabled in raspi-config
 
+Important: At least on MacOS firewall has to be disabled to connect to the server
+
 Controls:
   - RCS on/off - Switch (1x Kippschalter)
   - SAS on/off - Switch (1x Kippschalter)

@@ -45,7 +45,7 @@ void onDisconnection() {
 }
 
 float flightControlSensitivity = .4f;
-bool actionGroupsPressed[10] = {false, false, false, false, false, false, false, false, false, false};
+bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, true, true};
 
 [[noreturn]] int main() {
     std::cout << "Starting ksp controller ..." << std::endl;
