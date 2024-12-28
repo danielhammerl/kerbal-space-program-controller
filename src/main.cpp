@@ -106,7 +106,7 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
     digitalWrite( PIN_SHIFT_REGISTER_CLOCK,   LOW );
     digitalWrite( PIN_STORAGE_REGISTER_CLOCK, LOW );
     digitalWrite( PIN_SERIAL_DATA_IN,         LOW );
-
+/*
     for (int i = 0; i < 16; i++)  {
         digitalWrite(PIN_SERIAL_DATA_IN, LOW);
 
@@ -133,6 +133,27 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
         triggerLatch( PIN_STORAGE_REGISTER_CLOCK );
 
         std::this_thread::sleep_for(std::chrono::milliseconds (50));
+    }*/
+
+    while(true) {
+        uint16_t val = 1;
+
+        unsigned int swappedVal = ((~val & 0x00FF) << 8) | ((~val & 0xFF00) >> 8);
+
+        for (int i = 0; i < 16; i++)  {
+            int bitValue = !!(swappedVal & (1 << i)); // Extrahiere das i-te Bit
+            digitalWrite(PIN_SERIAL_DATA_IN, bitValue);
+
+            digitalWrite(PIN_SHIFT_REGISTER_CLOCK, HIGH);
+            digitalWrite(PIN_SHIFT_REGISTER_CLOCK, LOW);
+        }
+
+        val = pow(val, 2);
+
+        // transfer to output registers
+        triggerLatch( PIN_STORAGE_REGISTER_CLOCK );
+
+        std::this_thread::sleep_for(std::chrono::milliseconds (500));
     }
 
     /*while(true) {
