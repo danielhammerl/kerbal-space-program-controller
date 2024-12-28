@@ -151,6 +151,7 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
                     std::cout << "trigger action group 0" << std::endl;
                 }
             } else {
+                std::cout << "digital read 106 is low" << std::endl;
                 actionGroupsPressed[0] = false;
             }
 
