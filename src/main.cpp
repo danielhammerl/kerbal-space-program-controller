@@ -112,21 +112,23 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
 
 
         digitalWrite(PIN_SHIFT_REGISTER_CLOCK, HIGH);
-        digitalWrite(PIN_SHIFT_REGISTER_CLOCK, HIGH);
+        digitalWrite(PIN_SHIFT_REGISTER_CLOCK, LOW);
+
+        triggerLatch( PIN_STORAGE_REGISTER_CLOCK );
     }
 
-    while(true) {
+    /*while(true) {
         for (int i = 0; i < 16; i++)  {
             digitalWrite(PIN_SERIAL_DATA_IN, HIGH);
             std::this_thread::sleep_for(std::chrono::milliseconds (50));
 
 
             digitalWrite(PIN_SHIFT_REGISTER_CLOCK, HIGH);
-            digitalWrite(PIN_SHIFT_REGISTER_CLOCK, HIGH);
+            digitalWrite(PIN_SHIFT_REGISTER_CLOCK, LOW);
         }
 
         triggerLatch( PIN_STORAGE_REGISTER_CLOCK );
-    }
+    }*/
 
     ////
 
