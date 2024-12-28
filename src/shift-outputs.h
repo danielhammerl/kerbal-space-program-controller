@@ -35,8 +35,8 @@ public:
     };
 
     void outputData(const ShiftOutputData &data) {
-        for (int i = 0; i < 10; ++i) {
-            storeBitInRegister(data.fuelInCurrentStage[i]);
+        for (bool i : data.fuelInCurrentStage) {
+            storeBitInRegister(i);
         }
         storeBitInRegister(false);
         storeBitInRegister(false);
@@ -62,7 +62,7 @@ public:
 private:
     
     void storeBitInRegister(bool value) {
-        digitalWrite(PIN_SERIAL_DATA_IN, value ? HIGH : LOW);
+        digitalWrite(PIN_SERIAL_DATA_IN, value ? LOW : HIGH); // flip value here
 
         digitalWrite(PIN_SHIFT_REGISTER_CLOCK, HIGH);
         digitalWrite(PIN_SHIFT_REGISTER_CLOCK, LOW);
