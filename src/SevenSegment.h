@@ -56,6 +56,7 @@ public:
     }
 
     ~SevenSegment() {
+        this->shutdown();
         close(spiFileDescriptor);
     }
 
