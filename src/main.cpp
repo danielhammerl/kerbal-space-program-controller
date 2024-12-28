@@ -42,8 +42,7 @@ GPIO22 Pin #15  DS
 
 // this function triggers transfer of stored bits to the output register
 // by a HIGH/LOW change of "latchPin"
-void triggerLatch( uint8_t latchPin )
-{
+void triggerLatch(uint8_t latchPin) {
     digitalWrite(latchPin, HIGH);
     digitalWrite(latchPin, LOW);
 }
@@ -97,15 +96,15 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
     /////
 
     // set pins as output
-    pinMode( PIN_SHIFT_REGISTER_CLOCK,   OUTPUT );
-    pinMode( PIN_STORAGE_REGISTER_CLOCK, OUTPUT );
-    pinMode( PIN_SERIAL_DATA_IN,         OUTPUT );
+    pinMode(PIN_SHIFT_REGISTER_CLOCK, OUTPUT);
+    pinMode(PIN_STORAGE_REGISTER_CLOCK, OUTPUT);
+    pinMode(PIN_SERIAL_DATA_IN, OUTPUT);
 
 
     // initialize output pins to LOW
-    digitalWrite( PIN_SHIFT_REGISTER_CLOCK,   LOW );
-    digitalWrite( PIN_STORAGE_REGISTER_CLOCK, LOW );
-    digitalWrite( PIN_SERIAL_DATA_IN,         LOW );
+    digitalWrite(PIN_SHIFT_REGISTER_CLOCK, LOW);
+    digitalWrite(PIN_STORAGE_REGISTER_CLOCK, LOW);
+    digitalWrite(PIN_SERIAL_DATA_IN, LOW);
 /*
     for (int i = 0; i < 16; i++)  {
         digitalWrite(PIN_SERIAL_DATA_IN, LOW);
@@ -135,12 +134,12 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
         std::this_thread::sleep_for(std::chrono::milliseconds (50));
     }*/
 
-    while(true) {
-        uint16_t val = 1;
+    uint16_t val = 1;
+    while (true) {
 
         unsigned int swappedVal = ((~val & 0x00FF) << 8) | ((~val & 0xFF00) >> 8);
 
-        for (int i = 0; i < 16; i++)  {
+        for (int i = 0; i < 16; i++) {
             int bitValue = !!(swappedVal & (1 << i)); // Extrahiere das i-te Bit
             digitalWrite(PIN_SERIAL_DATA_IN, bitValue);
 
@@ -148,12 +147,16 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
             digitalWrite(PIN_SHIFT_REGISTER_CLOCK, LOW);
         }
 
-        val = pow(val, 2);
-
         // transfer to output registers
-        triggerLatch( PIN_STORAGE_REGISTER_CLOCK );
+        triggerLatch(PIN_STORAGE_REGISTER_CLOCK);
 
-        std::this_thread::sleep_for(std::chrono::milliseconds (500));
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+        if (val == 1) {
+            val = 2;
+        } else {
+            val = pow(val, 2);
+        }
     }
 
     /*while(true) {
