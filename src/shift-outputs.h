@@ -12,7 +12,8 @@
 #define PIN_STORAGE_REGISTER_CLOCK 27
 #define PIN_SERIAL_DATA_IN         22
 
-#define DATA_LENGTH 24
+//#define DATA_LENGTH 24
+#define DATA_LENGTH 16
 
 class ShiftOutputs {
 public:
@@ -45,7 +46,7 @@ public:
             dataToWrite.set(x, data.fuelInCurrentStage[x]);
         }
 
-        for (int i = 0; i < 10; ++i) {
+        /*for (int i = 0; i < 10; ++i) {
             dataToWrite.set(i + 10, data.electricalCharge[i]);
         }
 
@@ -55,7 +56,7 @@ public:
 
         dataToWrite.set(22, data.connectedToCommnet);
 
-        dataToWrite.set(23, data.connectedToKspServer);
+        dataToWrite.set(23, data.connectedToKspServer);*/
 
         processBitsetLittleEndian(dataToWrite, [this](bool value) { this->triggerLatch(); });
 
