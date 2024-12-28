@@ -5,10 +5,14 @@
 #include "base-header.h"
 #include <iostream>
 #include <array>
+#include <functional>
+#include <bitset>
 
 #define PIN_SHIFT_REGISTER_CLOCK   17
 #define PIN_STORAGE_REGISTER_CLOCK 27
 #define PIN_SERIAL_DATA_IN         22
+
+#define DATA_LENGTH 24
 
 class ShiftOutputs {
 public:
@@ -35,37 +39,56 @@ public:
     };
 
     void outputData(const ShiftOutputData &data) {
-        for (bool i : data.fuelInCurrentStage) {
-            storeBitInRegister(i);
-        }
-        storeBitInRegister(false);
-        storeBitInRegister(false);
-        storeBitInRegister(false);
-        storeBitInRegister(false);
-        storeBitInRegister(false);
-        storeBitInRegister(false);
+        std::bitset<DATA_LENGTH> dataToWrite;
 
-       /* for (int i = 0; i < 10; ++i) {
-            storeBitInRegister(data.electricalCharge[i]);
+        for (int x = 0; x < 10; x++) {
+            dataToWrite.set(x, data.fuelInCurrentStage[x]);
         }
 
-        storeBitInRegister(data.highG);
+        for (int i = 0; i < 10; ++i) {
+            dataToWrite.set(i + 10, data.electricalCharge[i]);
+        }
 
-        storeBitInRegister(data.heatShieldWarning);
+        dataToWrite.set(20, data.highG);
 
-        storeBitInRegister(data.connectedToCommnet);
+        dataToWrite.set(21, data.heatShieldWarning);
 
-        storeBitInRegister(data.connectedToKspServer);
-*/
+        dataToWrite.set(22, data.connectedToCommnet);
+
+        dataToWrite.set(23, data.connectedToKspServer);
+
+        processBitsetLittleEndian(dataToWrite, [this](bool value) { this->triggerLatch(); });
+
         triggerLatch();
     }
+
 private:
-    
+
     void storeBitInRegister(bool value) {
         digitalWrite(PIN_SERIAL_DATA_IN, value ? LOW : HIGH); // flip value here
 
         digitalWrite(PIN_SHIFT_REGISTER_CLOCK, HIGH);
         digitalWrite(PIN_SHIFT_REGISTER_CLOCK, LOW);
+    }
+
+    void processBitsetLittleEndian(const std::bitset<DATA_LENGTH> &bitset, const std::function<void(bool)> &callback) {
+        const int BITS_PER_BYTE = 8;
+        constexpr std::size_t BYTES = (DATA_LENGTH + BITS_PER_BYTE - 1) / BITS_PER_BYTE; // Anzahl der Bytes
+
+        // Verarbeite jedes Byte in Little-Endian-Reihenfolge
+        for (std::size_t byteIndex = 0; byteIndex < BYTES; ++byteIndex) {
+            std::size_t reversedByteIndex = BYTES - 1 - byteIndex; // Reverse die Byte-Reihenfolge
+
+            // Verarbeite jedes Bit innerhalb des Bytes
+            for (std::size_t bitOffset = 0; bitOffset < BITS_PER_BYTE; ++bitOffset) {
+                std::size_t bitIndex = reversedByteIndex * BITS_PER_BYTE + bitOffset;
+
+                // Überspringe Bits außerhalb der tatsächlichen Größe
+                if (bitIndex < DATA_LENGTH) {
+                    callback(bitset[bitIndex]);
+                }
+            }
+        }
     }
 
     void triggerLatch() {
