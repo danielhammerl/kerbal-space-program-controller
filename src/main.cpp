@@ -144,18 +144,18 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
             digitalWrite(115, HIGH);
 
             if (digitalRead(106) == HIGH) {
-                std::cout << "digital read 106 is high" << std::endl;
+                std::cout << "digital read 106 is HIGH" << std::endl;
                 if(!actionGroupsPressed[0]) {
                     actionGroupsPressed[0] = true;
                     vessel.control().toggle_action_group(0);
-                    std::cout << "trigger action group 0" << std::endl;
+                   // std::cout << "trigger action group 0" << std::endl;
                 }
             } else {
-                std::cout << "digital read 106 is low" << std::endl;
+                std::cout << "digital read 106 is LOW" << std::endl;
                 actionGroupsPressed[0] = false;
             }
 
-            if (digitalRead(105) == HIGH) {
+           /* if (digitalRead(105) == HIGH) {
                 if(!actionGroupsPressed[1]) {
                     actionGroupsPressed[1] = true;
                     vessel.control().toggle_action_group(1);
@@ -163,7 +163,7 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
                 }
             } else {
                 actionGroupsPressed[1] = false;
-            }
+            }*(
 
             get_altitude(sevenSegment, static_cast<unsigned long long>(flight.surface_altitude()));
         } else {
