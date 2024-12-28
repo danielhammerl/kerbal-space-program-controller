@@ -44,6 +44,12 @@ static void digitalWrite(int pin, int value) {
 #endif
 };
 
+static void pullUpDnControl(int pin, int pud) {
+#ifdef DEBUG_MODE
+    std::cout << "Call mocked pullUpDnControl with pin " << pin << " and pud " << pud << std::endl;
+#endif
+}
+
 #endif
 
 #ifdef KSP_CONTROLLER_DEV_MODE
