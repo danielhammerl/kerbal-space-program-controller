@@ -64,7 +64,7 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
 
     pinMode(100, OUTPUT); // light on / off (temp)
     pinMode(106, INPUT); // action group 0
-    //pullUpDnControl(106, 2);
+    pullUpDnControl(106, 2);
     pinMode(105, INPUT); // action group 1
 
     pinMode(112, OUTPUT); // high G
@@ -143,15 +143,15 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
             digitalWrite(114, HIGH);
             digitalWrite(115, HIGH);
 
-            if (digitalRead(106) == HIGH) {
-                std::cout << "digital read 106 is HIGH" << std::endl;
+            if (digitalRead(106) == LOW) {
+                std::cout << "digital read 106 is LOW" << std::endl;
                 if(!actionGroupsPressed[0]) {
                     actionGroupsPressed[0] = true;
                     vessel.control().toggle_action_group(0);
                    // std::cout << "trigger action group 0" << std::endl;
                 }
             } else {
-                std::cout << "digital read 106 is LOW" << std::endl;
+                std::cout << "digital read 106 is HIGH" << std::endl;
                 actionGroupsPressed[0] = false;
             }
 
