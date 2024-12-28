@@ -92,6 +92,8 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
     std::cout << "We are in Dev mode!" << std::endl;
 #endif
 
+    wiringPiSetupGpio();
+
     /////
 
     // set pins as output
@@ -129,8 +131,6 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
     ////
 
     SevenSegment sevenSegment;
-
-    wiringPiSetupGpio();
 
     // joystick has to be js0, means if multiple joysticks are connected only one works
     auto joystickDevice = open("/dev/input/js0", O_RDONLY | O_NONBLOCK);
