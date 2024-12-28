@@ -143,6 +143,7 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
             digitalWrite(115, HIGH);
 
             if (digitalRead(106) == HIGH) {
+                std::cout << "digital read 106 is high" << std::endl;
                 if(!actionGroupsPressed[0]) {
                     actionGroupsPressed[0] = true;
                     vessel.control().toggle_action_group(0);
