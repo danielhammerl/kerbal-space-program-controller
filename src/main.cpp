@@ -163,7 +163,7 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
                 }
             } else {
                 actionGroupsPressed[1] = false;
-            }*(
+            }*/
 
             get_altitude(sevenSegment, static_cast<unsigned long long>(flight.surface_altitude()));
         } else {
