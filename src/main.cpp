@@ -150,13 +150,9 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
         // transfer to output registers
         triggerLatch(PIN_STORAGE_REGISTER_CLOCK);
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
-        if (val == 1) {
-            val = 2;
-        } else {
-            val = pow(val, 2);
-        }
+        val = val * 2;
     }
 
     /*while(true) {
