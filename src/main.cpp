@@ -11,41 +11,10 @@
 #include <unistd.h>
 #include "SevenSegment.h"
 #include "base-header.h"
+#include "shift-outputs.h"
 #include <sstream>
 
 bool isConnected = false;
-
-/*
-gcc -Wall -o 74hc595 74hc595.c -lpthread -lpigpio
-*/
-
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-/*
-GPIO17 Pin #11  SH_CP
-GPIO27 Pin #13  ST_CP
-GPIO22 Pin #15  DS
-*/
-#define PIN_SH_CP   17  // Pin ist GPIO-#
-#define PIN_ST_CP   27  // Pin ist GPIO-#
-#define PIN_DS      22  // Pin ist GPIO-#
-
-#define PIN_SHIFT_REGISTER_CLOCK   PIN_SH_CP
-#define PIN_STORAGE_REGISTER_CLOCK PIN_ST_CP
-#define PIN_SERIAL_DATA_IN         PIN_DS
-
-#define LSBFIRST     0
-#define MSBFIRST     1
-
-
-// this function triggers transfer of stored bits to the output register
-// by a HIGH/LOW change of "latchPin"
-void triggerLatch(uint8_t latchPin) {
-    digitalWrite(latchPin, HIGH);
-    digitalWrite(latchPin, LOW);
-}
 
 
 void get_altitude(SevenSegment &sevenSegment, unsigned long long altitude) {
@@ -92,84 +61,7 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
 #endif
 
     wiringPiSetupGpio();
-
-    /////
-
-    // set pins as output
-    pinMode(PIN_SHIFT_REGISTER_CLOCK, OUTPUT);
-    pinMode(PIN_STORAGE_REGISTER_CLOCK, OUTPUT);
-    pinMode(PIN_SERIAL_DATA_IN, OUTPUT);
-
-
-    // initialize output pins to LOW
-    digitalWrite(PIN_SHIFT_REGISTER_CLOCK, LOW);
-    digitalWrite(PIN_STORAGE_REGISTER_CLOCK, LOW);
-    digitalWrite(PIN_SERIAL_DATA_IN, LOW);
-/*
-    for (int i = 0; i < 16; i++)  {
-        digitalWrite(PIN_SERIAL_DATA_IN, LOW);
-
-
-        digitalWrite(PIN_SHIFT_REGISTER_CLOCK, HIGH);
-        digitalWrite(PIN_SHIFT_REGISTER_CLOCK, LOW);
-
-        triggerLatch( PIN_STORAGE_REGISTER_CLOCK );
-    }
-
-    for(int val = 0; val <= 65000; val++ )
-    {
-        unsigned int swappedVal = ((~val & 0x00FF) << 8) | ((~val & 0xFF00) >> 8);
-
-        for (int i = 0; i < 16; i++)  {
-            int bitValue = !!(swappedVal & (1 << i)); // Extrahiere das i-te Bit
-            digitalWrite(PIN_SERIAL_DATA_IN, bitValue);
-
-            digitalWrite(PIN_SHIFT_REGISTER_CLOCK, HIGH);
-            digitalWrite(PIN_SHIFT_REGISTER_CLOCK, LOW);
-        }
-
-        // transfer to output registers
-        triggerLatch( PIN_STORAGE_REGISTER_CLOCK );
-
-        std::this_thread::sleep_for(std::chrono::milliseconds (50));
-    }*/
-
-    uint16_t val = 1;
-    while (true) {
-
-        unsigned int swappedVal = ((~val & 0x00FF) << 8) | ((~val & 0xFF00) >> 8);
-
-        for (int i = 0; i < 16; i++) {
-            int bitValue = !!(swappedVal & (1 << i)); // Extrahiere das i-te Bit
-            digitalWrite(PIN_SERIAL_DATA_IN, bitValue);
-
-            digitalWrite(PIN_SHIFT_REGISTER_CLOCK, HIGH);
-            digitalWrite(PIN_SHIFT_REGISTER_CLOCK, LOW);
-        }
-
-        // transfer to output registers
-        triggerLatch(PIN_STORAGE_REGISTER_CLOCK);
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-
-        val = val * 2;
-    }
-
-    /*while(true) {
-        for (int i = 0; i < 16; i++)  {
-            digitalWrite(PIN_SERIAL_DATA_IN, HIGH);
-            std::this_thread::sleep_for(std::chrono::milliseconds (50));
-
-
-            digitalWrite(PIN_SHIFT_REGISTER_CLOCK, HIGH);
-            digitalWrite(PIN_SHIFT_REGISTER_CLOCK, LOW);
-        }
-
-        triggerLatch( PIN_STORAGE_REGISTER_CLOCK );
-    }*/
-
-    ////
-
+    ShiftOutputs shiftOutputs;
     SevenSegment sevenSegment;
 
     // joystick has to be js0, means if multiple joysticks are connected only one works
@@ -233,21 +125,39 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
                 }
             }
 
-            auto lights = vessel.control().lights();
+            bool lights = vessel.control().lights();
 
-            digitalWrite(100, lights ? HIGH : LOW);
+            ShiftOutputs::ShiftOutputData shiftOutputData;
 
-            /*if (digitalRead(106) == LOW) {
-                std::cout << "digital read 106 is LOW" << std::endl;
-                if(!actionGroupsPressed[0]) {
-                    actionGroupsPressed[0] = true;
-                    vessel.control().toggle_action_group(0);
-                   // std::cout << "trigger action group 0" << std::endl;
-                }
-            } else {
-                std::cout << "digital read 106 is HIGH" << std::endl;
-                actionGroupsPressed[0] = false;
-            }*/
+            // TOOD change this data
+            shiftOutputData.highG = false;
+            shiftOutputData.connectedToCommnet = false;
+            shiftOutputData.connectedToKspServer = false;
+            shiftOutputData.heatShieldWarning = false;
+
+            shiftOutputData.fuelInCurrentStage[0] = false;
+            shiftOutputData.fuelInCurrentStage[1] = false;
+            shiftOutputData.fuelInCurrentStage[2] = false;
+            shiftOutputData.fuelInCurrentStage[3] = lights;
+            shiftOutputData.fuelInCurrentStage[4] = false;
+            shiftOutputData.fuelInCurrentStage[5] = false;
+            shiftOutputData.fuelInCurrentStage[6] = false;
+            shiftOutputData.fuelInCurrentStage[7] = false;
+            shiftOutputData.fuelInCurrentStage[8] = false;
+            shiftOutputData.fuelInCurrentStage[9] = false;
+
+            shiftOutputData.electricalCharge[0] = false;
+            shiftOutputData.electricalCharge[1] = false;
+            shiftOutputData.electricalCharge[2] = false;
+            shiftOutputData.electricalCharge[3] = false;
+            shiftOutputData.electricalCharge[4] = false;
+            shiftOutputData.electricalCharge[5] = false;
+            shiftOutputData.electricalCharge[6] = false;
+            shiftOutputData.electricalCharge[7] = false;
+            shiftOutputData.electricalCharge[8] = false;
+            shiftOutputData.electricalCharge[9] = false;
+
+            shiftOutputs.outputData(shiftOutputData);
 
             get_altitude(sevenSegment, static_cast<unsigned long long>(flight.surface_altitude()));
         } else {
