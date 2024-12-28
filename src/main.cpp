@@ -64,7 +64,7 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
 
     pinMode(100, OUTPUT); // light on / off (temp)
     pinMode(106, INPUT); // action group 0
-    pullUpDnControl(106, 2);
+    //pullUpDnControl(106, 2);
     pinMode(105, INPUT); // action group 1
 
     pinMode(112, OUTPUT); // high G
