@@ -41,28 +41,28 @@ public:
         storeBitInRegister(true);
         storeBitInRegister(false);
         storeBitInRegister(false);
-        storeBitInRegister(true);
+        storeBitInRegister(false);
+        storeBitInRegister(false);
+        storeBitInRegister(false);
+        storeBitInRegister(false);
+        storeBitInRegister(false);
+
+        storeBitInRegister(false);
+        storeBitInRegister(false);
+        storeBitInRegister(false);
+        storeBitInRegister(false);
         storeBitInRegister(false);
         storeBitInRegister(false);
         storeBitInRegister(false);
         storeBitInRegister(false);
 
-        storeBitInRegister(false);
-        storeBitInRegister(true);
-        storeBitInRegister(false);
-        storeBitInRegister(false);
-        storeBitInRegister(true);
-        storeBitInRegister(false);
-        storeBitInRegister(false);
-        storeBitInRegister(false);
-
 
         storeBitInRegister(false);
         storeBitInRegister(false);
-        storeBitInRegister(true);
         storeBitInRegister(false);
         storeBitInRegister(false);
-        storeBitInRegister(true);
+        storeBitInRegister(false);
+        storeBitInRegister(false);
         storeBitInRegister(false);
         storeBitInRegister(false);
 
