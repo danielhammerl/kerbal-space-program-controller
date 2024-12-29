@@ -25,6 +25,8 @@ public:
         digitalWrite(PIN_SHIFT_REGISTER_CLOCK, LOW);
         digitalWrite(PIN_STORAGE_REGISTER_CLOCK, LOW);
         digitalWrite(PIN_SERIAL_DATA_IN, LOW);
+
+        timer.reset();
     }
 
     struct ShiftOutputData {
@@ -37,37 +39,41 @@ public:
     };
 
     void outputData(const ShiftOutputData &data) {
-        // third bit shifter, 7 to 0
-        storeBitInRegister(data.highG);
-        storeBitInRegister(data.heatShieldWarning);
-        storeBitInRegister(data.connectedToKspServer);
-        storeBitInRegister(data.connectedToCommnet);
-        storeBitInRegister(data.electricalCharge[9]);
-        storeBitInRegister(data.electricalCharge[8]);
-        storeBitInRegister(data.electricalCharge[7]);
-        storeBitInRegister(data.electricalCharge[6]);
+        if (timer.elapsedMilliseconds() > 50) {
+            // third bit shifter, 7 to 0
+            storeBitInRegister(data.highG);
+            storeBitInRegister(data.heatShieldWarning);
+            storeBitInRegister(data.connectedToKspServer);
+            storeBitInRegister(data.connectedToCommnet);
+            storeBitInRegister(data.electricalCharge[9]);
+            storeBitInRegister(data.electricalCharge[8]);
+            storeBitInRegister(data.electricalCharge[7]);
+            storeBitInRegister(data.electricalCharge[6]);
 
-         // second bit shifter, 7 to 0
-        storeBitInRegister(data.electricalCharge[5]);
-        storeBitInRegister(data.electricalCharge[4]);
-        storeBitInRegister(data.electricalCharge[3]);
-        storeBitInRegister(data.electricalCharge[2]);
-        storeBitInRegister(data.electricalCharge[1]);
-        storeBitInRegister(data.electricalCharge[0]);
-        storeBitInRegister(data.fuelInCurrentStage[9]);
-        storeBitInRegister(data.fuelInCurrentStage[8]);
+            // second bit shifter, 7 to 0
+            storeBitInRegister(data.electricalCharge[5]);
+            storeBitInRegister(data.electricalCharge[4]);
+            storeBitInRegister(data.electricalCharge[3]);
+            storeBitInRegister(data.electricalCharge[2]);
+            storeBitInRegister(data.electricalCharge[1]);
+            storeBitInRegister(data.electricalCharge[0]);
+            storeBitInRegister(data.fuelInCurrentStage[9]);
+            storeBitInRegister(data.fuelInCurrentStage[8]);
 
-        // first bit shifter, 7 to 0
-        storeBitInRegister(data.fuelInCurrentStage[7]);
-        storeBitInRegister(data.fuelInCurrentStage[6]);
-        storeBitInRegister(data.fuelInCurrentStage[5]);
-        storeBitInRegister(data.fuelInCurrentStage[4]);
-        storeBitInRegister(data.fuelInCurrentStage[3]);
-        storeBitInRegister(data.fuelInCurrentStage[2]);
-        storeBitInRegister(data.fuelInCurrentStage[1]);
-        storeBitInRegister(data.fuelInCurrentStage[0]);
+            // first bit shifter, 7 to 0
+            storeBitInRegister(data.fuelInCurrentStage[7]);
+            storeBitInRegister(data.fuelInCurrentStage[6]);
+            storeBitInRegister(data.fuelInCurrentStage[5]);
+            storeBitInRegister(data.fuelInCurrentStage[4]);
+            storeBitInRegister(data.fuelInCurrentStage[3]);
+            storeBitInRegister(data.fuelInCurrentStage[2]);
+            storeBitInRegister(data.fuelInCurrentStage[1]);
+            storeBitInRegister(data.fuelInCurrentStage[0]);
 
-        triggerLatch();
+            triggerLatch();
+
+            timer.reset();
+        }
     }
 
 private:
@@ -85,6 +91,8 @@ private:
         digitalWrite(PIN_STORAGE_REGISTER_CLOCK, HIGH);
         digitalWrite(PIN_STORAGE_REGISTER_CLOCK, LOW);
     }
+
+    Timer timer;
 };
 
 #endif

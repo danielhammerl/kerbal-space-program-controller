@@ -53,6 +53,8 @@ public:
         this->setIntensity(4);
         this->setScanLimit(7);
         this->wakeUp();
+
+        timer.reset();
     }
 
     ~SevenSegment() {
@@ -74,27 +76,28 @@ public:
 
     // set every bit of decimalPlaceBitmask to 1 where a decimal point should be
     void writeString(std::string toWrite, unsigned char decimalPlaceBitmask = 0b00000000) {
-        if(toWrite.length() > 8) {
-            throw std::invalid_argument("Can only write max 8 digit strings to 7 segment");
-        }
-
-        if(toWrite.length() < 8) {
-            // pad string left with ' ' to 8 chars
-            toWrite.insert(toWrite.begin(), 8 - toWrite.size(), ' ');
-        }
-
-        for(unsigned index = 1; index <= toWrite.length(); index++) {
-            bool hasDecimalPlace = decimalPlaceBitmask >> (index-1) & 0x1;
-
-            auto dataValue = SEVEN_SEGMENT_FONT.at(toWrite[toWrite.length() - index]);
-            if(hasDecimalPlace) {
-                dataValue = 0b10000000 | dataValue; // set first bit to true to toggle decimal point
+        if(timer.elapsedMilliseconds() > 50) {
+            if (toWrite.length() > 8) {
+                throw std::invalid_argument("Can only write max 8 digit strings to 7 segment");
             }
 
-            this->sendData(index, dataValue);
-        }
+            if (toWrite.length() < 8) {
+                // pad string left with ' ' to 8 chars
+                toWrite.insert(toWrite.begin(), 8 - toWrite.size(), ' ');
+            }
 
-        // define refresh rate here
+            for (unsigned index = 1; index <= toWrite.length(); index++) {
+                bool hasDecimalPlace = decimalPlaceBitmask >> (index - 1) & 0x1;
+
+                auto dataValue = SEVEN_SEGMENT_FONT.at(toWrite[toWrite.length() - index]);
+                if (hasDecimalPlace) {
+                    dataValue = 0b10000000 | dataValue; // set first bit to true to toggle decimal point
+                }
+
+                this->sendData(index, dataValue);
+            }
+            timer.reset();
+        }
 
         // ?
         delay(5);
@@ -102,6 +105,7 @@ public:
 
 private:
     int spiFileDescriptor;
+    Timer timer;
 };
 
 

@@ -13,9 +13,12 @@
 #else
 // mock wiringpi in dev env
 
-static int wiringPiSPISetup(int channel, int speed, int mod) {return 0;};
-static int wiringPiSPISetup (int channel, int speed) {return 0;};
-static int wiringPiSetupGpio() {return 0;};
+static int wiringPiSPISetup(int channel, int speed, int mod) { return 0; };
+
+static int wiringPiSPISetup(int channel, int speed) { return 0; };
+
+static int wiringPiSetupGpio() { return 0; };
+
 static void delay(unsigned int howLong) {};
 
 #define INPUT 0
@@ -67,8 +70,27 @@ static std::string getHostName() {
 
 static constexpr float normalizeShort(short value) {
     return value < 0
-               ? -static_cast<float>(value) / std::numeric_limits<short>::min()
-               : static_cast<float>(value) / std::numeric_limits<short>::max();
+           ? -static_cast<float>(value) / std::numeric_limits<short>::min()
+           : static_cast<float>(value) / std::numeric_limits<short>::max();
 }
+
+class Timer {
+public:
+    void reset() {
+        startTime = std::chrono::system_clock::now();
+    }
+
+    long long elapsedMilliseconds() {
+        return std::chrono::duration_cast<std::chrono::milliseconds>(
+                std::chrono::system_clock::now() - startTime).count();
+    }
+
+    double elapsedSeconds() {
+        return (double) elapsedMilliseconds() / 1000.0;
+    }
+
+private:
+    std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
+};
 
 #endif
