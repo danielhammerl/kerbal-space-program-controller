@@ -76,7 +76,7 @@ public:
 
     // set every bit of decimalPlaceBitmask to 1 where a decimal point should be
     void writeString(std::string toWrite, unsigned char decimalPlaceBitmask = 0b00000000) {
-        if(timer.elapsedMilliseconds() > 50) {
+        if(timer.elapsedMilliseconds() > 1500) {
             if (toWrite.length() > 8) {
                 throw std::invalid_argument("Can only write max 8 digit strings to 7 segment");
             }

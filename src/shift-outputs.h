@@ -39,7 +39,7 @@ public:
     };
 
     void outputData(const ShiftOutputData &data) {
-        if (timer.elapsedMilliseconds() > 50) {
+        if (timer.elapsedMilliseconds() > 1500) {
             // third bit shifter, 7 to 0
             storeBitInRegister(data.highG);
             storeBitInRegister(data.heatShieldWarning);
