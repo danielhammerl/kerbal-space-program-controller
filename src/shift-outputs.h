@@ -39,14 +39,14 @@ public:
     void outputData(const ShiftOutputData &data) {
 
         // third bit shifter
-       /* storeBitInRegister(data.electricalCharge[6]);
+        storeBitInRegister(data.electricalCharge[6]);
         storeBitInRegister(data.electricalCharge[7]);
         storeBitInRegister(data.electricalCharge[8]);
         storeBitInRegister(data.electricalCharge[9]);
         storeBitInRegister(data.connectedToKspServer);
         storeBitInRegister(data.connectedToCommnet);
         storeBitInRegister(data.highG);
-        storeBitInRegister(data.heatShieldWarning);*/
+        storeBitInRegister(data.heatShieldWarning);
 
         // second bit shifter
         storeBitInRegister(data.electricalCharge[0]);
