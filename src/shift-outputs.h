@@ -38,8 +38,36 @@ public:
 
     void outputData(const ShiftOutputData &data) {
 
+        storeBitInRegister(true);
+        storeBitInRegister(false);
+        storeBitInRegister(false);
+        storeBitInRegister(true);
+        storeBitInRegister(false);
+        storeBitInRegister(false);
+        storeBitInRegister(false);
+        storeBitInRegister(false);
+
+        storeBitInRegister(false);
+        storeBitInRegister(true);
+        storeBitInRegister(false);
+        storeBitInRegister(false);
+        storeBitInRegister(true);
+        storeBitInRegister(false);
+        storeBitInRegister(false);
+        storeBitInRegister(false);
+
+
+        storeBitInRegister(false);
+        storeBitInRegister(false);
+        storeBitInRegister(true);
+        storeBitInRegister(false);
+        storeBitInRegister(false);
+        storeBitInRegister(true);
+        storeBitInRegister(false);
+        storeBitInRegister(false);
+
         // third bit shifter
-        storeBitInRegister(data.electricalCharge[6]);
+        /*storeBitInRegister(data.electricalCharge[6]);
         storeBitInRegister(data.electricalCharge[7]);
         storeBitInRegister(data.electricalCharge[8]);
         storeBitInRegister(data.electricalCharge[9]);
@@ -66,7 +94,7 @@ public:
         storeBitInRegister(data.fuelInCurrentStage[4]);
         storeBitInRegister(data.fuelInCurrentStage[5]);
         storeBitInRegister(data.fuelInCurrentStage[6]);
-        storeBitInRegister(data.fuelInCurrentStage[7]);
+        storeBitInRegister(data.fuelInCurrentStage[7]);*/
 
         triggerLatch();
     }
