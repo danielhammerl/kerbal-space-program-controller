@@ -80,6 +80,8 @@ private:
     }
 
     void triggerLatch() {
+        // define refresh rate here
+
         digitalWrite(PIN_STORAGE_REGISTER_CLOCK, HIGH);
         digitalWrite(PIN_STORAGE_REGISTER_CLOCK, LOW);
     }

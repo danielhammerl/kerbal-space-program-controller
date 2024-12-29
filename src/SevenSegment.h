@@ -94,6 +94,9 @@ public:
             this->sendData(index, dataValue);
         }
 
+        // define refresh rate here
+
+        // ?
         delay(5);
     }
 
