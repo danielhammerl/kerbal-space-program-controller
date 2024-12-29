@@ -19,7 +19,7 @@ bool isConnected = false;
 
 void get_altitude(SevenSegment &sevenSegment, unsigned long long altitude) {
     std::stringstream ss;
-    int exponent = 1; // 1 for meters, 4 for kilometers, 7 for megameters, ...
+    int exponent = 0; // 0 for meters, 3 for kilometers, 6 for megameters, ...
     while (altitude > 1000000) {
         if (exponent < 7) {
             exponent += 3;
@@ -130,31 +130,31 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
             ShiftOutputs::ShiftOutputData shiftOutputData;
 
             // TOOD change this data
-            shiftOutputData.highG = lights;
-            shiftOutputData.connectedToCommnet = lights;
-            shiftOutputData.connectedToKspServer = lights;
-            shiftOutputData.heatShieldWarning = lights;
+            shiftOutputData.highG = true;
+            shiftOutputData.connectedToCommnet = false;
+            shiftOutputData.connectedToKspServer = true;
+            shiftOutputData.heatShieldWarning = lights; //yellow
 
-            shiftOutputData.fuelInCurrentStage[0] = lights;
-            shiftOutputData.fuelInCurrentStage[1] = lights;
-            shiftOutputData.fuelInCurrentStage[2] = lights;
-            shiftOutputData.fuelInCurrentStage[3] = lights;
-            shiftOutputData.fuelInCurrentStage[4] = lights;
-            shiftOutputData.fuelInCurrentStage[5] = lights;
-            shiftOutputData.fuelInCurrentStage[6] = lights;
-            shiftOutputData.fuelInCurrentStage[7] = lights;
-            shiftOutputData.fuelInCurrentStage[8] = lights;
-            shiftOutputData.fuelInCurrentStage[9] = lights;
+            shiftOutputData.fuelInCurrentStage[0] = true;
+            shiftOutputData.fuelInCurrentStage[1] = true;
+            shiftOutputData.fuelInCurrentStage[2] = true;
+            shiftOutputData.fuelInCurrentStage[3] = false;
+            shiftOutputData.fuelInCurrentStage[4] = false;
+            shiftOutputData.fuelInCurrentStage[5] = false;
+            shiftOutputData.fuelInCurrentStage[6] = false;
+            shiftOutputData.fuelInCurrentStage[7] = false;
+            shiftOutputData.fuelInCurrentStage[8] = false;
+            shiftOutputData.fuelInCurrentStage[9] = true;
 
-            shiftOutputData.electricalCharge[0] = lights;
-            shiftOutputData.electricalCharge[1] = lights;
-            shiftOutputData.electricalCharge[2] = lights;
-            shiftOutputData.electricalCharge[3] = lights;
-            shiftOutputData.electricalCharge[4] = lights;
-            shiftOutputData.electricalCharge[5] = lights;
-            shiftOutputData.electricalCharge[6] = lights;
-            shiftOutputData.electricalCharge[7] = lights;
-            shiftOutputData.electricalCharge[8] = lights;
+            shiftOutputData.electricalCharge[0] = false;
+            shiftOutputData.electricalCharge[1] = true;
+            shiftOutputData.electricalCharge[2] = true;
+            shiftOutputData.electricalCharge[3] = false;
+            shiftOutputData.electricalCharge[4] = false;
+            shiftOutputData.electricalCharge[5] = false;
+            shiftOutputData.electricalCharge[6] = false;
+            shiftOutputData.electricalCharge[7] = true;
+            shiftOutputData.electricalCharge[8] = false;
             shiftOutputData.electricalCharge[9] = lights;
 
             shiftOutputs.outputData(shiftOutputData);
