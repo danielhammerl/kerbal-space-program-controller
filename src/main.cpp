@@ -130,32 +130,32 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
             ShiftOutputs::ShiftOutputData shiftOutputData;
 
             // TOOD change this data
-            shiftOutputData.highG = lights;
+            shiftOutputData.highG = true;
             shiftOutputData.connectedToCommnet = false;
-            shiftOutputData.connectedToKspServer = false;
-            shiftOutputData.heatShieldWarning = false; //yellow
+            shiftOutputData.connectedToKspServer = true;
+            shiftOutputData.heatShieldWarning = lights; //yellow
 
-            shiftOutputData.fuelInCurrentStage[0] = false;
-            shiftOutputData.fuelInCurrentStage[1] = false;
-            shiftOutputData.fuelInCurrentStage[2] = false;
+            shiftOutputData.fuelInCurrentStage[0] = true;
+            shiftOutputData.fuelInCurrentStage[1] = true;
+            shiftOutputData.fuelInCurrentStage[2] = true;
             shiftOutputData.fuelInCurrentStage[3] = false;
             shiftOutputData.fuelInCurrentStage[4] = false;
             shiftOutputData.fuelInCurrentStage[5] = false;
             shiftOutputData.fuelInCurrentStage[6] = false;
             shiftOutputData.fuelInCurrentStage[7] = false;
             shiftOutputData.fuelInCurrentStage[8] = false;
-            shiftOutputData.fuelInCurrentStage[9] = false;
+            shiftOutputData.fuelInCurrentStage[9] = true;
 
             shiftOutputData.electricalCharge[0] = false;
-            shiftOutputData.electricalCharge[1] = false;
-            shiftOutputData.electricalCharge[2] = false;
+            shiftOutputData.electricalCharge[1] = true;
+            shiftOutputData.electricalCharge[2] = true;
             shiftOutputData.electricalCharge[3] = false;
             shiftOutputData.electricalCharge[4] = false;
             shiftOutputData.electricalCharge[5] = false;
             shiftOutputData.electricalCharge[6] = false;
-            shiftOutputData.electricalCharge[7] = false;
+            shiftOutputData.electricalCharge[7] = true;
             shiftOutputData.electricalCharge[8] = false;
-            shiftOutputData.electricalCharge[9] = false;
+            shiftOutputData.electricalCharge[9] = lights;
 
             shiftOutputs.outputData(shiftOutputData);
 
