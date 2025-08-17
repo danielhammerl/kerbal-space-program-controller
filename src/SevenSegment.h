@@ -62,17 +62,17 @@ public:
         close(spiFileDescriptor);
     }
 
-    void sendData(unsigned char registerAddress, unsigned char data)  {
+    void sendData(unsigned char registerAddress, unsigned char data) const  {
         unsigned char dataToWrite[2] = {registerAddress, data};
         write(spiFileDescriptor, dataToWrite, 2);
     }
 
-    void shutdown() { sendData(SHUTDOWN, 0); }
-    void wakeUp() { sendData(SHUTDOWN, 1); }
+    void shutdown() const { sendData(SHUTDOWN, 0); }
+    void wakeUp() const { sendData(SHUTDOWN, 1); }
 
-    void setScanLimit(unsigned char limit) { sendData(SCAN_LIMIT, limit); }
+    void setScanLimit(unsigned char limit) const { sendData(SCAN_LIMIT, limit); }
 
-    void setIntensity(unsigned char intensity) { sendData(INTENSITY, intensity); }
+    void setIntensity(unsigned char intensity) const { sendData(INTENSITY, intensity); }
 
     // set every bit of decimalPlaceBitmask to 1 where a decimal point should be
     void writeString(std::string toWrite, unsigned char decimalPlaceBitmask = 0b00000000) {
