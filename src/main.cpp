@@ -124,7 +124,7 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
                     }
                 }
             }
-
+            /*
             bool lights = vessel.control().lights();
 
             ShiftOutputs::ShiftOutputData shiftOutputData;
@@ -158,7 +158,7 @@ bool actionGroupsPressed[10] = {true, true, true, true, true, true, true, true, 
             shiftOutputData.electricalCharge[9] = lights;
 
             shiftOutputs.outputData(shiftOutputData);
-
+*/
             get_altitude(sevenSegment, static_cast<unsigned long long>(flight.surface_altitude()));
         } else {
             if (isConnected) {
