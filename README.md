@@ -23,7 +23,7 @@ Controls:
   - Action Groups (10 Push Buttons?)
   - SAS Mode (dreh poti mit mind. 8 fixe positionen)
   - RCS Mode - Lin/Rot (1x Kippschalter)
-  - RCS Precise Mode? (1x Kippschalter, wenn aktiv, erhöhrt joystick sensitivität um faktor x)
+  - RCS Precise Mode? (1x Kippschalter, wenn aktiv, erhöht joystick sensitivität um faktor x)
 
 Indicators:
   - Altitude (over ground) (7 segment anzeige)
