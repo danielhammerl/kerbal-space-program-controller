@@ -6,7 +6,7 @@ After=hostapd.service
 
 [Service]
 Type=simple
-ExecStart=/home/pi/kerbal-space-program-controller/update-and-run.sh
+ExecStart=/home/pi/kerbal-space-program-controller/build/ksp-controller
 WorkingDirectory=/home/pi/kerbal-space-program-controller
 Restart=on-failure
 RestartSec=10
