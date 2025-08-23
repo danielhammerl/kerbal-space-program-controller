@@ -7,8 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 add_executable(ksp-controller
         src/main.cpp
-        src/base/TcpSocket.h
-        src/base/TcpSocket.cpp
 )
 
 target_include_directories(ksp-controller PUBLIC)
