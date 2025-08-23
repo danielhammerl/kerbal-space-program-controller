@@ -17,25 +17,18 @@ target_link_libraries(ksp-controller)
 
 include(FetchContent)
 
-if(APPLE OR WIN32)
-    set(BOOST_INCLUDE_LIBRARIES asio)
-    set(BOOST_ENABLE_CMAKE ON)
+set(BOOST_INCLUDE_LIBRARIES asio)
+set(BOOST_ENABLE_CMAKE ON)
 
-    FetchContent_Declare(
-            Boost
-            URL https://github.com/boostorg/boost/releases/download/boost-1.89.0/boost-1.89.0-cmake.tar.xz
-            DOWNLOAD_NO_EXTRACT FALSE
-            GIT_SHALLOW TRUE
-    )
+FetchContent_Declare(
+        Boost
+        URL https://github.com/boostorg/boost/releases/download/boost-1.89.0/boost-1.89.0-cmake.tar.xz
+        DOWNLOAD_NO_EXTRACT FALSE
+        GIT_SHALLOW TRUE
+)
 
-    FetchContent_MakeAvailable(Boost)
+FetchContent_MakeAvailable(Boost)
 
-    target_include_directories(ksp-controller PUBLIC)
-
-else()
-    set(Boost_NO_BOOST_CMAKE ON)
-    find_package(Boost 1.89.0 REQUIRED COMPONENTS system)
-    target_include_directories(ksp-controller PUBLIC ${Boost_INCLUDE_DIRS})
-endif()
+target_include_directories(ksp-controller PUBLIC)
 
 target_link_libraries(ksp-controller PUBLIC Boost::asio)
