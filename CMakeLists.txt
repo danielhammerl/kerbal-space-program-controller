@@ -33,6 +33,7 @@ if(APPLE OR WIN32)
     target_include_directories(ksp-controller PUBLIC)
 
 else()
+    set(Boost_NO_BOOST_CMAKE ON)
     find_package(Boost 1.89 REQUIRED COMPONENTS system)
     target_include_directories(ksp-controller PUBLIC ${Boost_INCLUDE_DIRS})
 endif()
