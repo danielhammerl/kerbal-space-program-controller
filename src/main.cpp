@@ -1,6 +1,7 @@
 #include <iostream>
 
 int main() {
-    std::cout << "hi" << std::endl;
+    std::cout << "KSP Controller started" << std::endl;
+
     return 0;
 }
