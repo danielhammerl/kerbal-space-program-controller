@@ -2,7 +2,6 @@
 Description=KSP Controller
 Wants=network-online.target
 After=network-online.target
-After=hostapd.service
 
 [Service]
 Type=simple
